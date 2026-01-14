@@ -1,0 +1,7 @@
+<% flash.each do |name, msg| -%>
+   <% if name == "alert" %>
+     <%= content_tag :div, msg, class: "#{name} text-center p-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 w-full h-auto role='alert'" %>
+   <% else -%>
+      <%= content_tag :div, msg, class: "#{name} text-center p-2 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 w-full dark:text-green-400 role='alert'" %>
+   <% end -%>
+<% end -%>

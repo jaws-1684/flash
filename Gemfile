@@ -70,3 +70,9 @@ gem "omniauth-rails_csrf_protection", "~> 2.0"
 gem "omniauth-google-oauth2", "~> 1.2"
 
 gem "cssbundling-rails", "~> 1.4"
+
+gem "class_variants", "~> 1.1"
+
+gem "view_component", "~> 4.2"
+
+gem "inline_svg", "~> 1.10"

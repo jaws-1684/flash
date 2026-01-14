@@ -1,0 +1,45 @@
+
+<%= render layout: 'users/shared/auth' do %>
+  <%= section_title "Log in to your account" %>
+    <%# <%= render 'users/shared/notice' %>
+  <%= form_for(resource, as: resource_name, html: {class: "w-full"}, url: session_path(resource_name), builder: CustomFormBuilder) do |f| %>
+
+    <%= render Field.new do %>
+      <%= f.label :email %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <% end %>
+
+    <%= render Field.new do %>
+      <div class="container flex items-center justify-between gap-8">
+        <div class="pass">
+          <%= f.label :password %>
+        </div>
+        <div class="forgot-pass">
+          <%= render Links::DefaultLinkComponent.new(href: forgot_pass_link).with_content("Forgot ?") %>
+        </div>  
+      </div>
+       <%= f.password_field :password, autocomplete: "current-password" %>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="rememberable flex gap-1 items-center mt-2">
+          <%= f.check_box :remember_me %>
+          <%= f.label :remember_me %>
+        </div>
+      <% end %>
+    <% end %>
+
+  
+
+   <%= render Buttons::WideButtonComponent.new do %>
+      <%= f.submit "Log in" %>
+   <% end %>
+
+    <div class="actions mt-4 flex items-center justify-center">
+      <div>
+         <p class="inline text-gray-700">Don't have an account?</p>
+          <span><%= render Links::DefaultLinkComponent.new(href: sign_up_link).with_content("Sign up") %></span>
+      </div>
+    </div>
+  <% end %>
+
+<% end %>

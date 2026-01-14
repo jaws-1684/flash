@@ -2,7 +2,7 @@
 
 <%= button_to "Log out", destroy_user_session_path, method: :delete %>
 <% content_for :title, "Chats" %>
-<p>Hello</p> <%= current_user.username %>
+<%# <p>Hello</p> <%= current_user.username %> %>
 <p>Email</p> <%= current_user.email %>
 <h1>Chats</h1>
 
