@@ -1,0 +1,45 @@
+<%= render layout: 'users/shared/auth' do %>
+  <%= section_title "Create an account" %>
+
+  <%= form_for(resource, as: resource_name, html: {class: "w-full"}, url: registration_path(resource_name), builder: CustomFormBuilder) do |f| %>
+    <%= render Field.new do %>
+      <%= f.label :email %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <% end %>
+
+    <%= render Field.new do %>
+      <%= f.label :password %>
+      <% if @minimum_password_length %>
+      <em>(<%= @minimum_password_length %> characters minimum)</em>
+      <% end %>
+      <%= f.password_field :password, autocomplete: "new-password" %>
+    <% end %>
+
+    <%= render Field.new do %>
+      <%= f.label :password_confirmation %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+    <% end %>
+
+    <%= render Buttons::WideButtonComponent.new(type: :form) do %>
+      <%= f.submit "Sign up", html_options: { class: "w-full" } %>
+    <% end %>
+  <% end %>
+
+
+  <%- omniauth_links do |link, provider|%>
+        <%= render Buttons::WideButtonComponent.new(color: :light_blue) do %>
+            <%= button_to link, data: { turbo: false }, class: "w-full p-2 flex justify-center items-center" do %>
+              <%= inline_svg_tag("#{provider}.svg", class: "size-6") %>
+              <%= "Continue with #{provider}" %>
+            <% end %>
+        <%- end %>  
+  <% end %>
+
+   <div class="actions mt-4 flex items-center justify-center">
+    <div>
+      <p class="inline">Already have an account?</p>
+      <span><%= render Links::DefaultLinkComponent.new(href: login_link).with_content("Log in") %></span>
+    </div>
+  </div>
+
+<% end %>
