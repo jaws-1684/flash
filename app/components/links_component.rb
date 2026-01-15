@@ -1,2 +1,0 @@
-class LinksComponent < ApplicationComponent
-end
