@@ -20,18 +20,18 @@
       <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
     <% end %>
 
-    <%= render Buttons::WideButtonComponent.new do %>
-      <%= f.submit "Sign up" %>
+    <%= render Buttons::WideButtonComponent.new(type: :form) do %>
+      <%= f.submit "Sign up", html_options: { class: "w-full" } %>
     <% end %>
   <% end %>
 
 
   <%- omniauth_links do |link, provider|%>
         <%= render Buttons::WideButtonComponent.new(color: :light_blue) do %>
-        <div class="flex justify-center items-center gap-2">
-            <%= inline_svg_tag("#{provider}.svg", class: "size-6") %>
-            <%= link  %>
-        </div>
+            <%= button_to link, data: { turbo: false }, class: "w-full flex justify-center items-center" do %>
+              <%= inline_svg_tag("#{provider}.svg", class: "size-6") %>
+              <%= "Continue with #{provider}" %>
+            <% end %>
         <%- end %>  
   <% end %>
 
@@ -43,3 +43,4 @@
   </div>
 
 <% end %>
+

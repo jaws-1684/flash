@@ -31,12 +31,12 @@
   
 
    <%= render Buttons::WideButtonComponent.new do %>
-      <%= f.submit "Log in" %>
+      <%= f.submit "Log in", html_options: {class: "w-full"} %>
    <% end %>
 
     <div class="actions mt-4 flex items-center justify-center">
       <div>
-         <p class="inline text-gray-700">Don't have an account?</p>
+         <p class="inline">Don't have an account?</p>
           <span><%= render Links::DefaultLinkComponent.new(href: sign_up_link).with_content("Sign up") %></span>
       </div>
     </div>

@@ -28,7 +28,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
     }
   )
   PASSWORD_VISIBILITY_CLASSES = ClassVariants.build(
-    base: "size-10 absolute inset-y-0 end-0 flex items-center hover:stroke-blue-700 z-20 px-3 cursor-pointer"
+    base: "size-10 absolute inset-y-0 end-0 flex items-center dark:stroke-white hover:stroke-blue-700 z-20 px-3 cursor-pointer"
     )
   # rubocop:enable Layout/LineLength
 
@@ -91,9 +91,9 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
 
     super(attribute,options, html_options.merge(default_opts))
   end
-  def submit(value = nil, options = {})
-    default_opts = { class: "cursor-pointer" }
-    super(value, options.merge(default_opts))
+  def submit(value = nil, html_options: {})
+    default_opts = { class: "cursor-pointer #{html_options&.dig(:class)}" }
+    super(value, default_opts)
   end
 
   private

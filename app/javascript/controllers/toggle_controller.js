@@ -22,7 +22,7 @@ export default class extends Controller {
   #overListener(e) {
    e.preventDefault()
    if (this.inputTarget.getAttribute("type") == "text" && e.target.id == "eye") {
-      e.target.children[0].setAttribute("fill", "blue")
+      e.target.children[0].setAttribute("fill", "#29187b")
    }
   }
   #leaveListener(e) {
@@ -33,14 +33,15 @@ export default class extends Controller {
   }
   #swapAtrributtes() {
     const attr = this.inputTarget.getAttribute("type") == "password" ? "text" : "password"
+    const tailwindClass = "size-10 absolute inset-y-0 end-0 flex items-center dark:stroke-white hover:stroke-blue-700 z-20 px-3 cursor-pointer"
     const icons = {
       password: {
         path: `<path fill="#000000" d="M3.26 11.602C3.942 8.327 6.793 6 10 6c3.206 0 6.057 2.327 6.74 5.602a.5.5 0 0 0 .98-.204C16.943 7.673 13.693 5 10 5c-3.693 0-6.943 2.673-7.72 6.398a.5.5 0 0 0 .98.204ZM10 8a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7Zm-2.5 3.5a2.5 2.5 0 1 1 5 0a2.5 2.5 0 0 1-5 0Z"/>`,
-        htmlClass: "size-10 absolute inset-y-0 end-0 flex items-center hover:stroke-blue-700 z-20 px-3 cursor-pointer"
+        htmlClass: tailwindClass
       },
       text: {
         path: `<path fill="#000000" d="M12 9.005a4 4 0 1 1 0 8a4 4 0 0 1 0-8ZM12 5.5c4.613 0 8.596 3.15 9.701 7.564a.75.75 0 1 1-1.455.365a8.504 8.504 0 0 0-16.493.004a.75.75 0 0 1-1.456-.363A10.003 10.003 0 0 1 12 5.5Z"/>`,
-        htmlClass: "size-10 absolute inset-y-0 end-0 flex items-center fill-blue-700 z-20 px-3 cursor-pointer"
+        htmlClass: tailwindClass
       }
       
     }

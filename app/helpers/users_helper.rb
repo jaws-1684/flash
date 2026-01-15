@@ -20,7 +20,7 @@ module UsersHelper
 	def omniauth_links &block
 		if devise_mapping.omniauthable?
 			resource_class.omniauth_providers.each do |provider|
-				yield(button_to("Continue with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), data: { turbo: false }), provider)
+				yield(omniauth_authorize_path(resource_name, provider), provider)
 			end
 		end
 	end
