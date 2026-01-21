@@ -1,10 +1,27 @@
 Rails.application.routes.draw do
+  root 'inertia_example#index'
+
+  devise_for :users, controllers: {
+    registrations: 'users/registrations',
+    sessions: 'users/sessions',
+    omniauth_callbacks: 'users/omniauth_callbacks',
+    passwords: 'users/passwords'
+  }
+
+  as :user do
+    get 'login', to: 'users/sessions#new'
+    get 'signup', to: 'users/registrations#new'
+    post 'signup', to: 'users/registrations#create'
+    post 'login', to: 'users/sessions#create'
+    match 'logout', to: 'users/sessions#destroy', via: Devise.mappings[:user].sign_out_via
+  end
+ 
 
   # Redirect to localhost from 127.0.0.1 to use same IP address with Vite server
   constraints(host: "127.0.0.1") do
     get "(*path)", to: redirect { |params, req| "#{req.protocol}localhost:#{req.port}/#{params[:path]}" }
   end
-  root 'inertia_example#index'
+  
   get 'inertia-example', to: 'inertia_example#index'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

@@ -1,4 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
 @plugin '@tailwindcss/typography';
 @plugin '@tailwindcss/forms';
+@theme {  
+	--font-roboto: "Roboto", sans-serif;
+	--color-logo: #29187b; 
+}
