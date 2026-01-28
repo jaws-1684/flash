@@ -14,6 +14,7 @@ import { getPasswordErrors } from '../../components/Forms/Errors/getPasswordErro
 
 import Checkbox from '../../components/Forms/Fields/Checkbox'
 import { jsRoutes } from '../../paths'
+import Oauth from '../../components/Auth/Oauth'
 
 function Login() {
   const { data, setData, post, transform, errors, processing } = useForm({
@@ -66,6 +67,8 @@ function Login() {
         <div className='mt-2'>
           <p className='inline dark:text-gray-400 text-gray-700 mr-2'>Don't have an account?</p><span>{<Link href={jsRoutes.signupPath()} method="get" name="Sign up"/>}</span>
         </div>
+
+        <Oauth/>
 
       </Auth>    
    </Layout>  

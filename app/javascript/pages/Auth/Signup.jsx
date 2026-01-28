@@ -10,9 +10,9 @@ import Button from '../../components/Button'
 import Layout from '../../components/Layout'
 import ContainerSm from '../../components/Containers/ContainerSm'
 import { getPasswordErrors } from '../../components/Forms/Errors/getPasswordErrors'
-import Omniauth from '../../components/Forms/Omniauth/Omniauth'
 import { jsRoutes } from '../../paths'
 import TextField from '../../components/Forms/Fields/TextField'
+import Oauth from '../../components/Auth/Oauth'
 
 function Signup() {
   const { data, setData, post, transform, errors, processing } = useForm({
@@ -88,20 +88,13 @@ function Signup() {
             Sign up
           </Button>  
         </Form>
-        <div className="w-full flex py-2 items-center">
-          <div className="flex-grow border-t border-gray-400"></div>
-          <span className="flex-shrink mx-4 text-gray-400">Or continue with</span>
-          <div className="flex-grow border-t border-gray-400"></div>
-        </div>
-        <ContainerSm>
-         <Omniauth/>
-       </ContainerSm>
-       
+
         <ContainerSm>
             <p className='inline dark:text-gray-400 text-gray-700 mr-2'>Already have an account?</p>
             <span>{<Link href={jsRoutes.loginPath()} method="get" name="Log in"/>}</span>
         </ContainerSm>
-
+        
+        <Oauth/>
       </Auth>    
    </Layout>  
   )

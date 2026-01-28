@@ -2,7 +2,7 @@ class User < ApplicationRecord
   include PgSearch::Model
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  before_create :create_slug
+  before_create :create_slug, :set_gravatar
   before_update :create_slug
 
   multisearchable against: [:slug, :username]
@@ -31,5 +31,16 @@ class User < ApplicationRecord
 
     def slug
       self.username.parameterize
+    end
+
+    def gravatar
+      gravatar = AvatarProviders::Gravatar.new(email_address: self.email)
+      gravatar.avatar_src
+    end
+
+    def set_gravatar
+      if self.avatar.blank?
+        self.avatar = gravatar
+      end
     end    
 end
