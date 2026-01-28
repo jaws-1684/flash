@@ -1,6 +1,7 @@
 import React from 'react'
 import FormField from '../FormField' 
 import { BASE_CLASSES } from './BaseClasses'
+import Error from '../../Error'
 
 export const emailIsValid = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 

@@ -12,10 +12,12 @@ import ContainerSm from '../../components/Containers/ContainerSm'
 import { getPasswordErrors } from '../../components/Forms/Errors/getPasswordErrors'
 import Omniauth from '../../components/Forms/Omniauth/Omniauth'
 import { jsRoutes } from '../../paths'
+import TextField from '../../components/Forms/Fields/TextField'
 
 function Signup() {
   const { data, setData, post, transform, errors, processing } = useForm({
     email: "",
+    username: "",
     password: "",
     password_confirmation: ""
   })
@@ -60,6 +62,15 @@ function Signup() {
             onChange={(e) => setData('email', e.target.value)} 
             value={data.email}
           />
+          <TextField
+            onChange={(e) => setData('username', e.target.value)}
+            placeholder="Enter your username"
+            name="username"
+            label="Username"
+            value={data.username}
+            maxlength={20}
+            required
+          />
           <PasswordField 
             onChange={(e) => setData('password', e.target.value)}
             value={data.password}
@@ -77,10 +88,10 @@ function Signup() {
             Sign up
           </Button>  
         </Form>
-        <div class="w-full flex py-2 items-center">
-          <div class="flex-grow border-t border-gray-400"></div>
-          <span class="flex-shrink mx-4 text-gray-400">Or continue with</span>
-          <div class="flex-grow border-t border-gray-400"></div>
+        <div className="w-full flex py-2 items-center">
+          <div className="flex-grow border-t border-gray-400"></div>
+          <span className="flex-shrink mx-4 text-gray-400">Or continue with</span>
+          <div className="flex-grow border-t border-gray-400"></div>
         </div>
         <ContainerSm>
          <Omniauth/>

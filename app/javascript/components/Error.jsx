@@ -1,6 +1,7 @@
 import React from 'react'
 
 function Error({text, title}) {
+  console.log(text, title)
   return (
     <div
   className="flex items-start p-2 sm:items-center text-sm text-red-800 text-strong rounded-md "
