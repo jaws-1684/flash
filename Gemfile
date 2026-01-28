@@ -75,3 +75,7 @@ gem "omniauth", "~> 2.1"
 gem "omniauth-rails_csrf_protection", "~> 2.0"
 
 gem "omniauth-google-oauth2", "~> 1.2"
+
+gem "pg_search", "~> 2.3"
+
+gem "faker", "~> 3.6"

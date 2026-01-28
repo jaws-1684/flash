@@ -13,6 +13,7 @@ import Error from '../../components/Error'
 import { getPasswordErrors } from '../../components/Forms/Errors/getPasswordErrors'
 
 import Checkbox from '../../components/Forms/Fields/Checkbox'
+import { jsRoutes } from '../../paths'
 
 function Login() {
   const { data, setData, post, transform, errors, processing } = useForm({
@@ -38,7 +39,6 @@ function Login() {
   }
   return (
    <Layout title='Login'>
-     
       <Auth>
         {errors.general && <Error text={errors.general}/>}
 
@@ -54,7 +54,7 @@ function Login() {
             value={data.password}
             error={inputErrors.password}
           >
-            <Link name="Forgot ?" href="/users/password/new" method="get"/>
+          <Link name="Forgot ?" href={jsRoutes.forgotPasswordPath()} method="get"/>
           </PasswordField>
           
           <Checkbox name="remember" onChange={(e) => setData('remember', e.target.checked)} text="Remember me"/>
@@ -64,7 +64,7 @@ function Login() {
           </Button>  
         </Form>
         <div className='mt-2'>
-          <p className='inline dark:text-gray-400 text-gray-700 mr-2'>Don't have an account?</p><span>{<Link href="/signup" method="get" name="Sign up"/>}</span>
+          <p className='inline dark:text-gray-400 text-gray-700 mr-2'>Don't have an account?</p><span>{<Link href={jsRoutes.signupPath()} method="get" name="Sign up"/>}</span>
         </div>
 
       </Auth>    

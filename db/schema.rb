@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_21_141405) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_28_092601) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -18,6 +18,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_141405) do
     t.datetime "created_at", null: false
     t.string "creator_id"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "pg_search_documents", force: :cascade do |t|
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.bigint "searchable_id"
+    t.string "searchable_type"
+    t.datetime "updated_at", null: false
+    t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
   end
 
   create_table "user_chats", force: :cascade do |t|
@@ -47,6 +56,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_141405) do
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
+    t.string "slug"
     t.datetime "updated_at", null: false
     t.string "username"
     t.index ["email"], name: "index_users_on_email", unique: true

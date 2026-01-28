@@ -11,6 +11,7 @@ import Layout from '../../components/Layout'
 import ContainerSm from '../../components/Containers/ContainerSm'
 import { getPasswordErrors } from '../../components/Forms/Errors/getPasswordErrors'
 import Omniauth from '../../components/Forms/Omniauth/Omniauth'
+import { jsRoutes } from '../../paths'
 
 function Signup() {
   const { data, setData, post, transform, errors, processing } = useForm({
@@ -87,7 +88,7 @@ function Signup() {
        
         <ContainerSm>
             <p className='inline dark:text-gray-400 text-gray-700 mr-2'>Already have an account?</p>
-            <span>{<Link href="/login" method="get" name="Log in"/>}</span>
+            <span>{<Link href={jsRoutes.loginPath()} method="get" name="Log in"/>}</span>
         </ContainerSm>
 
       </Auth>    
