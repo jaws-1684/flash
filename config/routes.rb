@@ -1,12 +1,11 @@
 Rails.application.routes.draw do
+  scope "/api" do
+    get "/chat/:id", to: "chats#show"
+    get "/search", to: "users#search"
+  end
 
-  # namespace :api do
-  #   namespace :v1 do
-  #     get "users/index"
-  #   end
-  # end
   
-  root 'inertia_example#index'
+  root 'chats#index'
 
   devise_for :users, controllers: {
     registrations: 'users/registrations',
@@ -22,7 +21,8 @@ Rails.application.routes.draw do
     post 'login', to: 'users/sessions#create'
     match 'logout', to: 'users/sessions#destroy', via: Devise.mappings[:user].sign_out_via
   end
- 
+  
+  resources :chats 
 
   # Redirect to localhost from 127.0.0.1 to use same IP address with Vite server
   constraints(host: "127.0.0.1") do
