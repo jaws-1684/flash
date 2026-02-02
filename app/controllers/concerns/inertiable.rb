@@ -19,6 +19,9 @@ module Inertiable
         csrf_token: form_authenticity_token
       }
     }
+    inertia_share current_user: -> {
+      current_user
+    }
   end
   
   def redirect_to(options = {}, response_options = {})
@@ -27,4 +30,7 @@ module Inertiable
     end
     super(options, response_options)
   end
+
+  private
+
 end
