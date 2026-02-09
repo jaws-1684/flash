@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { useForm, usePage } from '@inertiajs/react'
 import Auth from '../../components/Auth/Auth'
-import Title from '../../components/Title'
+import Title from '../../components/ui/Title'
 import EmailField from '../../components/Forms/Fields/EmailField'
 import PasswordField from '../../components/Forms/Fields/PasswordField'
-import Link from '../../components/Link'
+import Link from '../../components/ui/Link'
 import Form from '../../components/Forms/Form'
-import Button from '../../components/Button'
-import Layout from '../../components/Layout'
+import Button from '../../components/ui/Button'
+import Layout from '../../components/Layouts/Layout'
 
 import Error from '../../components/Error'
 import { getPasswordErrors } from '../../components/Forms/Errors/getPasswordErrors'
@@ -39,7 +39,6 @@ function Login() {
     })))
   }
   return (
-   <Layout title='Login'>
       <Auth>
         {errors.general && <Error text={errors.general}/>}
 
@@ -71,9 +70,9 @@ function Login() {
         <Oauth/>
 
       </Auth>    
-   </Layout>  
   )
 }
+Login.layout = (page) => <Layout children={page} title="Login" />
 
 export default Login
 

@@ -1,7 +1,7 @@
 import { createInertiaApp } from '@inertiajs/react'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-
+import { router } from '@inertiajs/react'
 createInertiaApp({
   // Set default page title
   // see https://inertia-rails.dev/guide/title-and-meta
@@ -34,7 +34,7 @@ createInertiaApp({
   setup({ el, App, props }) {
     createRoot(el).render(
       <StrictMode>
-        <App {...props} />
+         <App {...props} />
       </StrictMode>
     )
   },
@@ -64,3 +64,12 @@ createInertiaApp({
     )
   }
 })
+//preventing chrome blanck page issues on button navigation
+window.addEventListener('popstate', (event) => {
+    event.stopImmediatePropagation()
+    router.visit(window.location.href, {
+        preserveState: false,
+        preserveScroll: false,
+        replace: true
+  })
+});

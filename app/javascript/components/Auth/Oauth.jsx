@@ -1,5 +1,5 @@
 import React from 'react'
-import ContinueWithSeparator from '../ContinueWithSeparator'
+import ContinueWithSeparator from '../ui/ContinueWithSeparator'
 import ContainerSm from '../Containers/ContainerSm'
 import Omniauth from '../Forms/Omniauth/Omniauth'
 

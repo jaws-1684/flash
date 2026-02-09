@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   scope "/api" do
-    get "/chat/:id", to: "chats#show"
+    resources :chats
+    post "/chats/:chat_id/messages", to: "chats/chats#create"
+    get "/chats/:chat_id/messages", to: "chats/chats#show"
     get "/search", to: "users#search"
   end
 

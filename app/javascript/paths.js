@@ -1,9 +1,18 @@
+const baseURI = {
+    default: "localhost:3000",
+    webSocket: `ws://localhost:3100/cable`
+}
+
+
 const railsRoutes = {
     login: "/login",
     signup: "/signup",
     user: "/users/:id",
     userPosts: "/users/:id/posts/:id",
-    forgotPassword: "/users/password/new"
+    forgotPassword: "/users/password/new",
+    chatMessages: "/api/chats/:id/messages",
+    search: "/api/search?username=:id",
+    newChat: "/api/chats",
 }
 
 const jsRoutes = {}
@@ -25,4 +34,4 @@ for(const [key, value] of Object.entries(railsRoutes)) {
     } 
 }
 
-export { jsRoutes }
+export { jsRoutes, baseURI}

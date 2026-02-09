@@ -1,13 +1,13 @@
 import React, {useState} from 'react'
 import { useForm } from '@inertiajs/react'
 import Auth from '../../components/Auth/Auth'
-import Title from '../../components/Title'
+import Title from '../../components/ui/Title'
 import EmailField from '../../components/Forms/Fields/EmailField'
 import PasswordField from '../../components/Forms/Fields/PasswordField'
-import Link from '../../components/Link'
+import Link from '../../components/ui/Link'
 import Form from '../../components/Forms/Form'
-import Button from '../../components/Button'
-import Layout from '../../components/Layout'
+import Button from '../../components/ui/Button'
+import Layout from '../../components/Layouts/Layout'
 import ContainerSm from '../../components/Containers/ContainerSm'
 import { getPasswordErrors } from '../../components/Forms/Errors/getPasswordErrors'
 import { jsRoutes } from '../../paths'
@@ -50,9 +50,7 @@ function Signup() {
       user: { ...data }
     })))
   }
-  return (
-   <Layout title='Signup'>
-     
+  return (    
       <Auth>
         
         <Title text="Create an account"/>
@@ -96,9 +94,9 @@ function Signup() {
         
         <Oauth/>
       </Auth>    
-   </Layout>  
   )
 }
 
+Signup.layout = (page) => <Layout children={page} title="Signup" />
 export default Signup
 

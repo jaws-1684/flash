@@ -11,14 +11,9 @@ class User < ApplicationRecord
                      :tsearch => { 
                       :prefix => true,
                        highlight: {
-                        StartSel: '<b>',
-                        StopSel: '</b>',
-                        MinWords: 123,
-                        MaxWords: 456,
-                        ShortWord: 4,
+                        StartSel: '<span class="highlight">',
+                        StopSel: '</span>',
                         HighlightAll: true,
-                        MaxFragments: 3,
-                        FragmentDelimiter: '&hellip;'
                       } 
 
                     }
@@ -34,13 +29,14 @@ class User < ApplicationRecord
   has_many :messages
   validates :username, :slug, uniqueness: :true
   validates :email, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-
+  
   def conversations
-    Chat.select(creator_id: self, recipient_id: self)
+    Chat.where(creator_id: self).or(Chat.where(recipient_id: self))
   end
 
+
   def chat_names
-    get_recipient = lambda {|chat| chat.recipient == self ? chat.creator : chat.recipient }
+    get_recipient = lambda {|chat|  chat_recipient(chat)}
     chats = conversations.includes(:creator, :recipient)
     chats.map do |chat; recipient|
       recipient = get_recipient.call(chat)
@@ -50,6 +46,13 @@ class User < ApplicationRecord
           avatar: recipient.avatar
       }
     end
+  end
+  def chat_recipient chat
+    chat.recipient == self ? chat.creator : chat.recipient
+  end
+
+  def find_chat(recipient_id)
+    Chat.where(creator_id: self).where(recipient_id: recipient_id).first
   end
 
   def as_json(options={})

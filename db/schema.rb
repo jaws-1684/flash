@@ -10,14 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_28_092601) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_05_101609) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+  enable_extension "pg_trgm"
 
   create_table "chats", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "creator_id"
+    t.string "recipient_id"
     t.datetime "updated_at", null: false
+    t.index ["creator_id", "recipient_id"], name: "index_chats_on_creator_id_and_recipient_id", unique: true
+    t.index ["recipient_id", "creator_id"], name: "index_chats_on_recipient_id_and_creator_id", unique: true
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.bigint "messageable_id"
+    t.string "messageable_type"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["messageable_type", "messageable_id"], name: "index_messages_on_messageable"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "pg_search_documents", force: :cascade do |t|
@@ -27,16 +42,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_28_092601) do
     t.string "searchable_type"
     t.datetime "updated_at", null: false
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
-  end
-
-  create_table "user_chats", force: :cascade do |t|
-    t.bigint "chat_id", null: false
-    t.datetime "created_at", null: false
-    t.string "friend_id"
-    t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
-    t.index ["chat_id"], name: "index_user_chats_on_chat_id"
-    t.index ["user_id"], name: "index_user_chats_on_user_id"
   end
 
   create_table "user_providers", force: :cascade do |t|
@@ -63,7 +68,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_28_092601) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "user_chats", "chats"
-  add_foreign_key "user_chats", "users"
+  add_foreign_key "messages", "users"
   add_foreign_key "user_providers", "users"
 end
