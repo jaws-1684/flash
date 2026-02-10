@@ -2,7 +2,6 @@ import {useEffect, useMemo} from 'react';
 import { createConsumer } from '@rails/actioncable';
 
 const useActionCable = (url) => {
-  console.log(url)
   const actionCable = useMemo(() => createConsumer(url), [url]);
 
   useEffect(() => {

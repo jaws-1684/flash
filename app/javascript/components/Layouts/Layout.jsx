@@ -7,7 +7,7 @@ import { ThemeContext } from '../Theme/ThemeContext.jsx'
 import { Head } from '@inertiajs/react'
 
 export default function Layout({ title="Flash", children }) {
-console.log("rendering Layout")
+
 const { flash } = usePage().props
 const {notice, alert} = flash
 
@@ -28,7 +28,7 @@ const {notice, alert} = flash
     if (!alert) return
    setToast(toast => ({...toast, alert: true}))
   }, [alert])
-  console.log("Layout children:", children);
+ 
   return (<>
     <ThemeContext.Provider value={themeValue}>
         <Head>

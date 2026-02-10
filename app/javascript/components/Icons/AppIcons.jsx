@@ -14,4 +14,50 @@ export function Magnifier(props) {
     </svg>
   )
 }
+export function Settings(props) {
+  return (
+      <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={200}
+      height={200}
+      viewBox="0 0 416 432"
+      {...props}
+    >
+      <path d="M366 237l45 35q7 6 3 14l-43 74q-4 8-13 4l-53-21q-18 13-36 21l-8 56q-1 9-11 9h-85q-9 0-11-9l-8-56q-19-8-36-21l-53 21q-9 3-13-4L1 286q-4-8 3-14l45-35q-1-12-1-21t1-21L4 160q-7-6-3-14l43-74q5-8 13-4l53 21q18-13 36-21l8-56q2-9 11-9h85q10 0 11 9l8 56q19 8 36 21l53-21q9-3 13 4l43 74q4 8-3 14l-45 35q2 12 2 21t-2 21zm-158.5 54q30.5 0 52.5-22t22-53-22-53-52.5-22-52.5 22-22 53 22 53 52.5 22z" />
+    </svg>
+  )
+}
+function Plus(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 36 36"
+      width="1.2rem"
+      height="1.2rem"
+      {...props}
+    >
+      <path
+        className='fill-gray-200'
+        d="M31 15H21V5a3 3 0 10-6 0v10H5a3 3 0 100 6h10v10a3 3 0 106 0V21h10a3 3 0 100-6z"
+      />
+    </svg>
+  )
+}
+
+export default Plus
+
+export function ContactBook(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={200}
+      height={200}
+      viewBox="0 0 512 512"
+      {...props}
+    >
+      <path d="M469 0h-64v4q-12-4-21-4H85Q68 0 55.5 12.5T43 43v64H21q-21 0-21 21t21 21h22v86H21q-21 0-21 21t21 21h22v86H21q-21 0-21 21t21 21h22v64q0 18 12.5 30.5T85 512h299q27 0 45.5-18.5T448 448v-85q27 0 45.5-18.5T512 299v-86h-4q4-12 4-21v-85h-4q4-14 4-22V43q0-18-12.5-30.5T469 0zm-21 43h21v42q0 22-21 22V43zm0 106q9 0 21-4v47q0 21-21 21v-64zm-43 299q0 21-21 21H85v-64h22q21 0 21-21t-21-21H85v-86h22q21 0 21-21t-21-21H85v-86h22q21 0 21-21t-21-21H85V43h299q21 0 21 21v384zm43-128v-64q9 0 21-4v47q0 21-21 21z" />
+    </svg>
+  )
+}
+
 

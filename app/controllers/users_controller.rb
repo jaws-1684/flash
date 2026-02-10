@@ -5,7 +5,7 @@ class UsersController < ApplicationController
     if users.length > 0
    	 render :json => users
    	else
-   	 render json: { error: "not found" }, status: 404
+   	 render json: { error: "not found" }, status: :unprocessable_entity
    	end
   end
 end

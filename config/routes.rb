@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
+  inertia '/contacts' => 'contacts/contacts'
   scope "/api" do
-    resources :chats
-    post "/chats/:chat_id/messages", to: "chats/chats#create"
-    get "/chats/:chat_id/messages", to: "chats/chats#show"
     get "/search", to: "users#search"
   end
-
+  resources :chats
+    post "/chats/:chat_id/messages", to: "chats/chats#create"
+    get "/chats/:chat_id/messages", to: "chats/chats#show"
   
   root 'chats#index'
 

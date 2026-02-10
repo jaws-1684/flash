@@ -5,12 +5,14 @@ const classVariants = {
 export const Action = ({onClick, children, variant="base"}) => {
     
     return <div 
-        className={`flex p-1 cursor-pointer ${classVariants[variant]}`} 
+        className={`flex p-1 flex-col items cursor-pointer ${classVariants[variant]}`} 
         onClick={onClick}>
         <div className='flex w-full'>
             <div className='w-full flex items-center gap-2'>     
                 {children}
             </div>    
+        </div>
+        <div className="h-1 border-b-1 border-gray-200 p-1 mx-12">
         </div>     
     </div>        
 }

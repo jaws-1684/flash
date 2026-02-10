@@ -10,9 +10,9 @@ const railsRoutes = {
     user: "/users/:id",
     userPosts: "/users/:id/posts/:id",
     forgotPassword: "/users/password/new",
-    chatMessages: "/api/chats/:id/messages",
+    chatMessages: "/chats/:id/messages",
     search: "/api/search?username=:id",
-    newChat: "/api/chats",
+    newChat: "/chats",
 }
 
 const jsRoutes = {}

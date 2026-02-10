@@ -3,20 +3,12 @@ import { usePage } from '@inertiajs/react';
 import AppLayout from '../../components/Layouts/AppLayout';
 import Layout from '../../components/Layouts/Layout';
 import Contacts from './components/Contacts';
-import Welcome from '../../components/Chats/Welcome';
+import Welcome from '../../components/ui/Welcome';
 import Search, {NotFound} from './components/Search';
 import Scrollable from '../../components/Containers/Scrollable';
-// import Bar from '../../components/ui/Bar';
-// import ThemeToggle from '../../components/Theme/ThemeToggle';
-// import IconButton from '../../components/ui/IconButton';
-
-// import TextLogo from '../../components/ui/TextLogo';
-// import { useDebouncedGet } from '../../components/hooks/useDebouncedGet';
-// import ContactSearch from '../../components/Chats/ContactSearch';
-
-// import { jsRoutes } from '../../paths';
-// import Scrollable from '../../components/Containers/Scrollable';
-
+import Plus from '../../components/Icons/AppIcons';
+import IconButton from '../../components/ui/IconButton';
+import { router } from '@inertiajs/react';
 
 export default function Chats({chats}) {
   const { current_user } = usePage().props
@@ -29,7 +21,7 @@ export default function Chats({chats}) {
   
 
 
-  const filteredContacts = chats.filter(chat => chat.name.toLowerCase().indexOf(searching.term.toLocaleLowerCase()) !== -1)
+  const filteredContacts = chatContacts.filter(chat => chat.name.toLowerCase().indexOf(searching.term.toLocaleLowerCase()) !== -1)
   const filterResult = searching.term && !filteredContacts.length && <NotFound/>
 
   if (!chats.length) return <Welcome currentUser={current_user}/>
@@ -40,10 +32,17 @@ export default function Chats({chats}) {
         setSearchTerm={(searchTerm) => setSearching({status: true, term: searchTerm})}
         placeholder="Search Conversations"
         />
-      <Scrollable>
+      <Scrollable className='h-full'>
          {filterResult}
           <Contacts chats={searching.term ? filteredContacts : chatContacts} />
       </Scrollable>
+
+      <div className='relative w-full z-50'>
+      <IconButton className='absolute cursor-pointer bottom-4 end-2 z-50 p-3 bg-logo rounded-full transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500' onClick={() => router.visit("/contacts")}>
+        <Plus className="size-xs"/>
+      </IconButton>
+      </div>
+      
     </>
   )
 }
@@ -53,53 +52,3 @@ Chats.layout = (page) => {
     <AppLayout children={page}/>
   </Layout>)
 }
-
-
-// console.log(chats)
-//   console.count('Chats render')
-//  
-
-//   
-//   const [contacts, contactsLoading] = [[], true]
-//   // const [contacts, contactsLoading] = useDebouncedGet({
-//   //   query: searchTerm,
-//   //   fn: jsRoutes.searchPath
-//   // })
-
-//   return (
-//     <div className='grid grid-cols-6 grid-rows-12 lg:grid-cols-12  max-h-dvh no-doc-scroll'>
-      
-//       <Bar title="Chats"/>
-
-//       <div className='flex flex-col md:flex-row bg-gray-200 col-start-1 col-span-full row-span-full divide-x divide-gray-300 dark:divide-bgray'>
-        
-//        
-
-      
-       
-//           <div className='area bg-white dark:bg-fgray w-full lg:w-[30%] p-4 gap-2 h-full'>
-            
-//             <div className='h-content w-full'>
-//                <TextLogo className="p-2 text-3xl subpixel-antialiased tracking-tight select-none mb-4"/>
-//                <ContactSearch 
-//                 searchTerm={searchTerm} 
-//                 setSearchTerm={setSearchTerm} 
-//                 loading={contactsLoading} 
-//                 contacts={contacts}
-//               />
-//             </div>
-//             
-//             {/* {!searchTerm && <Scrollable opts='h-[80%] lg:h-[85%]'>
-//               { chats
-//                 ? 
-//                 : 
-//               }
-//             </Scrollable>} */}
-             
-//           </div>
-
-       
-//       </div>  
-
-//     </div>
-//   )

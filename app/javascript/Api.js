@@ -1,10 +1,40 @@
-export class Api {
-    constructor () {this.abortController = new AbortController()}
-    async get(path) {
-        const response = await fetch(path, {
-            signal: this.abortController.signal,
-        })
-        return this.#errorGetHandle(response)
+class Api {
+    constructor () {
+        this.cache = new Map()
+        this.abortControllers = new Map()
+        this.promiseMemo = new Map()
+    }
+ 
+    get({key, path, aggressive = true}) {
+        if (this.promiseMemo.has(key)) {
+            return this.promiseMemo.get(key)
+        }
+        if (aggressive && this.cache.has(key)) {
+            return Promise.resolve(this.cache.get(key))
+        }
+        const controller = new AbortController()
+
+        this.abortControllers.set(key, controller)
+
+    
+        const promise = fetch(path, { signal: controller.signal })
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                }
+                throw new Error("Network response was not ok.")
+            })
+            .then(data => {
+                this.cache.set(key, data)
+                return data
+            })
+            .finally(() => {
+                this.abortControllers.delete(key)
+                this.promiseMemo.delete(key)
+            })
+
+        this.promiseMemo.set(key, promise)
+        return promise
     }
     async post({path, authenticityToken, body}) {
         const response = await fetch(path, {
@@ -15,24 +45,39 @@ export class Api {
             },
             body: JSON.stringify(body),
         })
-        return this.#errorGetHandle(response)    
-    }
-    async #errorGetHandle(response) {
         try {
             if (response.ok) {
-                return await response.json();
+                const data = await response.json()
+                return data
             }
-            throw new Error("Network response was not ok.")
+            throw new Error("Could not save your data")
         } catch (err) {
-            console.log(response)
             console.log(err)
+        }   
+    }
+    
+    abort(key) {
+        if (this.abortControllers.has(key)) {
+            const controller = this.abortControllers.get(key)
+            controller.abort()
+            this.abortControllers.delete(key)
         }
     }
-    abort() {
-        this.abortController.abort()
+    isAborted(key) {
+        if (this.abortControllers.has(key)) {
+            const controller = this.abortControllers.get(key)
+            return controller.signal.aborted
+        }
     }
-    aborted() {
-        return this.abortController.signal.aborted
+    invalidate(key) {
+        if (this.cache.has(key)) this.cache.delete(key)
+    }
+    invalidateAll() {
+        this.cache.clear()
     }
     
 }
+
+let api = new Api()
+
+export { api }

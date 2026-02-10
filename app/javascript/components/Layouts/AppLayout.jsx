@@ -10,12 +10,13 @@ function AppLayout({children}) {
   const { current_user } = usePage().props
   
   return (
-    <div className='flex flex-col grow-1 max-w-screen px-4 lg:px-50 mt-4'>
-          <div className='panel flex p-2 item-center justify-between'>
-              <div className="logo flex">
+    <div className='grow-1 px-4 flex justify-center no-doc-scroll max-h-screen'>
+      <div className='w-full flex flex-col lg:w-[50%] relative'>
+         <div className='panel flex py-4 item-center justify-between border-gray-200 border-b-1 dark:border-gray-700'>
+              <button className="logo flex cursor-pointer" onClick={() => router.visit("/chats")}>
                 <Logo size="2em" className="fill-logo dark:fill-gray-200"/>
                 <TextLogo className="text-xl"/>
-              </div>
+              </button>
    
              <div className='flex gap-4 items-center'>
             
@@ -25,11 +26,14 @@ function AppLayout({children}) {
                 
                     
             
-                <Avatar avatar={current_user.avatar} alt={current_user.username + " image"} className={"size-8"}/>
+                <Avatar avatar={current_user.avatar} alt={current_user.username + " image"} className={"size-8 overflow-hidden"}/>
                
              </div>
            </div>
-           {children}
+           <div className='h-[80dvh] lg:h-[85dvh]'>
+             {children}
+           </div>
+      </div> 
     </div>
   )
 }

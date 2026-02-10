@@ -3,7 +3,7 @@ import Close from "../../../components/Icons/Close";
 
 const SearchMessage = ({children}) => <h2 className='text-center text-sm text-gray-500'>{children}</h2>
 
-function Loading() {
+export function Loading() {
     return <SearchMessage>We are searching for contacts, please wait</SearchMessage>;
 }
 export function NotFound() {

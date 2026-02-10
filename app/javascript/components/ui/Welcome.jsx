@@ -1,5 +1,5 @@
 import React from 'react'
-import { Welcome as WelcomeIcon} from '../../components/Icons/AppIcons';
+import { Welcome as WelcomeIcon} from '../Icons/AppIcons';
 function Welcome({currentUser}) {
   return (
    <div className='flex flex-col items-center justify-center gap-2'>

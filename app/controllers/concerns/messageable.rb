@@ -1,17 +1,4 @@
-module Messageable
-	def show
-		if @messageable
-			render inertia: 'chats/show', props: { 
-				chat_id: @messageable.id,
-				recipient: current_user.chat_recipient(@messageable), 
-				messages:  order_by_creation_time(@messageable.messages)
-			}
-	      # render :json => order_by_creation_time(@messageable.messages)
-	    else
-	     redirect_to root_path, alert: "Chat not found" 
-	    end
-	end
-	
+module Messageable	
 	def create
 		@message = @messageable.messages.new(message_params)
 		@message.user = current_user
