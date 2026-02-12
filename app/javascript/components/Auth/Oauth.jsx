@@ -1,15 +1,17 @@
-import React from 'react'
-import ContinueWithSeparator from '../ui/ContinueWithSeparator'
-import ContainerSm from '../Containers/ContainerSm'
-import Omniauth from '../Forms/Omniauth/Omniauth'
+import React from "react";
+import ContinueWithSeparator from "../ui/ContinueWithSeparator";
+import ContainerSm from "../Containers/ContainerSm";
+import Omniauth from "../Forms/Omniauth/Omniauth";
 
 function Oauth() {
-    return <>
-    <ContinueWithSeparator/>
-        <ContainerSm>
-         <Omniauth/>
-    </ContainerSm>
+  return (
+    <>
+      <ContinueWithSeparator />
+      <ContainerSm>
+        <Omniauth />
+      </ContainerSm>
     </>
+  );
 }
 
-export default Oauth
+export default Oauth;

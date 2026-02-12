@@ -1,9 +1,7 @@
-import React, { Children } from 'react'
+import React from "react";
 
-function ContainerSm({children}) {
-  return (
-    <div className='mt-2'>{children}</div>
-  )
+function ContainerSm({ children }) {
+  return <div className="mt-2">{children}</div>;
 }
 
-export default ContainerSm
+export default ContainerSm;

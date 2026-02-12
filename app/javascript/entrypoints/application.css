@@ -1,27 +1,26 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
 @plugin '@tailwindcss/typography';
 @plugin '@tailwindcss/forms';
-@theme {  
-	--font-roboto: "Roboto", sans-serif;
-	--color-logo: #29187b;
-	--color-fblack: #121214;
-	--color-fgray: #1A1A1E;
-	--color-bgray: #222225;
+@theme {
+  --font-roboto: "Roboto", sans-serif;
+  --color-logo: #29187b;
+  --color-fblack: #121214;
+  --color-fgray: #1a1a1e;
+  --color-bgray: #222225;
 }
 
 .highlight {
-	color: #005792; ;
+  color: #005792;
 }
 ::-webkit-scrollbar {
   width: 2px; /* Scrollbar width */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888; /* Scrollbar thumb */
-  ; /* Border radius */
+  background: #888; /* Scrollbar thumb */ /* Border radius */
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -37,23 +36,23 @@
   border-color: transparent;
 }
 .no-doc-scroll {
-    overflow:hidden;
+  overflow: hidden;
 }
 
 .loader {
-    border: 5px solid #FFF;
-    border-bottom-color: #6e6d6d;
-    border-radius: 50%;
-    display: inline-block;
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
-    }
+  border: 5px solid #fff;
+  border-bottom-color: #6e6d6d;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
 
-    @keyframes rotation {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-    } 
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

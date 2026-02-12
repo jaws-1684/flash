@@ -1,48 +1,43 @@
-import React from 'react'
-import { useState, useEffect, useRef } from 'react'
-import { api } from '../../lib/Api'
+import React from "react";
+import { useState, useEffect, useRef } from "react";
+import { api } from "../../lib/Api";
 
-export function useDebouncedGet({
-  key,
-  query,
-  fn,
-  debounceMs = 100,
-}) {
-  const [data, setData] = useState([])
-  const [loading, setLoading] = useState(false)
-  const path = fn(query)
+export function useDebouncedGet({ key, query, fn, debounceMs = 100 }) {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const path = fn(query);
 
-  const loadTimeoutRef = useRef(null)
+  const loadTimeoutRef = useRef(null);
 
   useEffect(() => {
-    const startTime = Date.now()
-    
-    if (!query)  return
+    const startTime = Date.now();
+
+    if (!query) return;
 
     const debounceTimeout = setTimeout(async () => {
-      setLoading(true)
+      setLoading(true);
 
       try {
-        const result = await api.get({path: path, key: key})
-        const elapsedTime = Date.now() - startTime
-        const remainingTime = Math.max(0 , 200 - elapsedTime)
+        const result = await api.get({ path: path, key: key });
+        const elapsedTime = Date.now() - startTime;
+        const remainingTime = Math.max(0, 200 - elapsedTime);
 
         loadTimeoutRef.current = setTimeout(() => {
-          setData(result ?? [])
-          setLoading(false)
-        }, remainingTime)
+          setData(result ?? []);
+          setLoading(false);
+        }, remainingTime);
       } catch (e) {
-        if (api.isAborted(path)) return
-        setData([])
+        if (api.isAborted(path)) return;
+        setData([]);
       }
-    }, debounceMs)
+    }, debounceMs);
 
     return () => {
-      api.abort(path)
-      clearTimeout(debounceTimeout)
-      clearTimeout(loadTimeoutRef.current)
-    }
-  }, [query, debounceMs])
+      api.abort(path);
+      clearTimeout(debounceTimeout);
+      clearTimeout(loadTimeoutRef.current);
+    };
+  }, [query, debounceMs]);
 
-  return [ data, loading, setData ]
+  return [data, loading, setData];
 }

@@ -1,13 +1,13 @@
-import React from 'react'
-import OmniauthPartial from './OmniauthPartial'
-import { Github as GithubIcon} from '../../Icons/OmniauthIcons'
+import React from "react";
+import OmniauthPartial from "./OmniauthPartial";
+import { Github as GithubIcon } from "../../Icons/OmniauthIcons";
 
-function Github({authenticity}) {
+function Github({ authenticity }) {
   return (
     <OmniauthPartial csrf_token={authenticity.csrf_token} provider="github">
-        <GithubIcon/>
+      <GithubIcon />
     </OmniauthPartial>
-  )
+  );
 }
 
-export default Github
+export default Github;

@@ -13,21 +13,21 @@ export default function useChannel(actionCable) {
         }
       },
       initialized: () => {
-        console.log('useChannel - INFO: Init ' + data.channel);
+        console.log("useChannel - INFO: Init " + data.channel);
         setSubscribed(true);
         if (callbacks.initialized) {
           callbacks.initialized();
         }
       },
       connected: () => {
-        console.log('useChannel - INFO: Connected to ' + data.channel);
+        console.log("useChannel - INFO: Connected to " + data.channel);
         setConnected(true);
         if (callbacks.connected) {
           callbacks.connected();
         }
       },
       disconnected: () => {
-        console.log('useChannel - INFO: Disconnected');
+        console.log("useChannel - INFO: Disconnected");
         setConnected(false);
         if (callbacks.disconnected) {
           callbacks.disconnected();
@@ -41,7 +41,7 @@ export default function useChannel(actionCable) {
     setSubscribed(false);
     if (channelRef.current) {
       console.log(
-        'useChannel - INFO: Unsubscribing from ' +
+        "useChannel - INFO: Unsubscribing from " +
           channelRef.current.identifier,
       );
       channelRef.current.unsubscribe();
@@ -57,19 +57,19 @@ export default function useChannel(actionCable) {
 
   const send = (action, payload) => {
     if (subscribed && !connected) {
-      throw 'useChannel - ERROR: not connected';
+      throw "useChannel - ERROR: not connected";
     }
 
     if (!subscribed) {
-      throw 'useChannel - ERROR: not subscribed';
+      throw "useChannel - ERROR: not subscribed";
     }
 
     try {
       channelRef?.current?.perform(action, payload);
     } catch (e) {
-      throw 'useChannel - ERROR: ' + e;
+      throw "useChannel - ERROR: " + e;
     }
   };
 
-  return {subscribe, unsubscribe, send};
+  return { subscribe, unsubscribe, send };
 }
