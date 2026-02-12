@@ -6,7 +6,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
-     render inertia: 'Auth/Signup', props: {}
+     render inertia: "Auth/Signup", props: {}
   end
 
   # POST /resource
@@ -28,7 +28,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     else
       clean_up_passwords resource
       set_minimum_password_length
-      render inertia: 'Auth/Signup', status: :unprocessable_entity
+      render inertia: "Auth/Signup", status: :unprocessable_entity
     end
   end
 

@@ -8,14 +8,14 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       @user.remember_me = true
       sign_in_and_redirect @user
     else
-      session['devise.github_data'] = auth
+      session["devise.github_data"] = auth
       redirect_to new_user_registration_url
     end
   end
   alias google github
 
   def failure
-    redirect_to new_user_session_path, alert: 'Authentication failed'
+    redirect_to new_user_session_path, alert: "Authentication failed"
   end
 
   private
@@ -33,6 +33,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def auth
-    request.env['omniauth.auth']
+    request.env["omniauth.auth"]
   end
 end

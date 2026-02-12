@@ -4,8 +4,8 @@ class Message < ApplicationRecord
   belongs_to :user
   has_many_attached :images
 
-  def as_json(options={})
-      super({except: [:messageable_type, :messageable_id, :image_keys], methods: :attached_images }.merge(options))
+  def as_json(options = {})
+      super({ except: [ :messageable_type, :messageable_id, :image_keys ], methods: :attached_images }.merge(options))
   end
 
   def attached_images
@@ -16,7 +16,7 @@ class Message < ApplicationRecord
     def attach_image_keys
       if images.attached?
         options = { width: 200, height: 200, crop: :fill }
-        keys = images.map {|image| image.url }.join(',')
+        keys = images.map { |image| image.url }.join(",")
         self.update(image_keys: keys)
       end
     end

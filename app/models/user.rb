@@ -8,13 +8,13 @@ class User < ApplicationRecord
   pg_search_scope :search,
                   against: :username,
                   using: {
-                     :tsearch => { 
-                      :prefix => true,
+                     tsearch: {
+                      prefix: true,
                        highlight: {
                         StartSel: '<span class="highlight">',
-                        StopSel: '</span>',
-                        HighlightAll: true,
-                      } 
+                        StopSel: "</span>",
+                        HighlightAll: true
+                      }
 
                     }
 
@@ -29,14 +29,14 @@ class User < ApplicationRecord
   has_many :messages
   validates :username, :slug, uniqueness: :true
   validates :email, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  
+
   def conversations
     Chat.where(creator_id: self).or(Chat.where(recipient_id: self))
   end
 
 
   def chat_names
-    get_recipient = lambda {|chat|  chat_recipient(chat)}
+    get_recipient = lambda { |chat|  chat_recipient(chat) }
     chats = conversations.includes(:creator, :recipient)
     chats.map do |chat; recipient|
       recipient = get_recipient.call(chat)
@@ -47,7 +47,7 @@ class User < ApplicationRecord
       }
     end
   end
-  def chat_recipient chat
+  def chat_recipient(chat)
     chat.recipient == self ? chat.creator : chat.recipient
   end
 
@@ -55,8 +55,8 @@ class User < ApplicationRecord
     Chat.where(creator_id: self).where(recipient_id: recipient_id).first
   end
 
-  def as_json(options={})
-      super({ only: [:username, :id, :avatar, :pg_search_highlight] }.merge(options))
+  def as_json(options = {})
+      super({ only: [ :username, :id, :avatar, :pg_search_highlight ] }.merge(options))
   end
 
   private
@@ -80,5 +80,5 @@ class User < ApplicationRecord
     end
     def create_save_chat
       Chat.create(creator_id: self, recipient_id: self)
-    end  
+    end
 end

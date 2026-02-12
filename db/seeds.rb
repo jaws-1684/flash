@@ -9,9 +9,9 @@
 #   end
 
 100.times do
-	User.create!(
-		email: Faker::Internet.unique.email,
-		password: Faker::Internet.password(min_length: 6),
-		username: Faker::Internet.unique.username
-	)
+  User.create!(
+    email: Faker::Internet.unique.email,
+    password: Faker::Internet.password(min_length: 6),
+    username: Faker::Internet.unique.username
+  )
 end

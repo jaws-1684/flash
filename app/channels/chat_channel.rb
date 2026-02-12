@@ -7,7 +7,7 @@ class ChatChannel < ApplicationCable::Channel
     stop_all_streams
   end
   def current_user
-      if verified_user = env['warden'].user
+      if verified_user = env["warden"].user
         verified_user
       else
         reject_unauthorized_connection
