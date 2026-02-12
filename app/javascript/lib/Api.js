@@ -20,7 +20,7 @@ class Api {
         const promise = fetch(path, { signal: controller.signal })
             .then(response => {
                 if (response.ok) {
-                    return response.json()
+                    return response.json() ?? []
                 }
                 throw new Error("Network response was not ok.")
             })
@@ -36,18 +36,23 @@ class Api {
         this.promiseMemo.set(key, promise)
         return promise
     }
-    async post({path, authenticityToken, body}) {
+    async post({path, authenticityToken, body, contentType="application/json", formData=false}) {
+        const headers = {
+             "X-CSRF-Token": authenticityToken
+        }
+        if (!formData) {
+            headers["Content-Type"] = contentType
+        }
+        const rBody = formData ? body : JSON.stringify(body)
+        
         const response = await fetch(path, {
             method: "POST",
-            headers: {
-                "X-CSRF-Token": authenticityToken,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(body),
+            headers: headers,
+            body: rBody,
         })
         try {
             if (response.ok) {
-                const data = await response.json()
+                const data = response.json()
                 return data
             }
             throw new Error("Could not save your data")
@@ -57,17 +62,15 @@ class Api {
     }
     
     abort(key) {
-        if (this.abortControllers.has(key)) {
-            const controller = this.abortControllers.get(key)
-            controller.abort()
-            this.abortControllers.delete(key)
-        }
+        const controller = this.abortControllers.get(key)
+        return controller?.signal.aborted ?? false
     }
     isAborted(key) {
         if (this.abortControllers.has(key)) {
             const controller = this.abortControllers.get(key)
             return controller.signal.aborted
         }
+        return controller?.signal.aborted ?? false
     }
     invalidate(key) {
         if (this.cache.has(key)) this.cache.delete(key)

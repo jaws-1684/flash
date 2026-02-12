@@ -13,7 +13,7 @@ import Error from '../../components/Error'
 import { getPasswordErrors } from '../../components/Forms/Errors/getPasswordErrors'
 
 import Checkbox from '../../components/Forms/Fields/Checkbox'
-import { jsRoutes } from '../../paths'
+import { jsRoutes } from '../../lib/paths'
 import Oauth from '../../components/Auth/Oauth'
 
 function Login() {
@@ -28,7 +28,7 @@ function Login() {
   })
   const onSubmit =(e) => {
     e.preventDefault()
-
+    
     const passwordError = getPasswordErrors(data.password)
     if (passwordError != "") {
       setInputErrors({...inputErrors, password: passwordError})
@@ -64,7 +64,7 @@ function Login() {
           </Button>  
         </Form>
         <div className='mt-2'>
-          <p className='inline dark:text-gray-400 text-gray-700 mr-2'>Don't have an account?</p><span>{<Link href={jsRoutes.signupPath()} method="get" name="Sign up"/>}</span>
+          <p className='inline dark:text-gray-400 text-gray-700 mr-2'>Don't have an account?</p><span><Link href={jsRoutes.signupPath()} method="get" name="Sign up"/></span>
         </div>
 
         <Oauth/>

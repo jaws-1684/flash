@@ -12,7 +12,7 @@ export const Action = ({onClick, children, variant="base"}) => {
                 {children}
             </div>    
         </div>
-        <div className="h-1 border-b-1 border-gray-200 p-1 mx-12">
+        <div className="h-1 border-b-1 border-gray-200 dark:border-gray-800 p-1 mx-12">
         </div>     
     </div>        
 }

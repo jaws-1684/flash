@@ -22,9 +22,11 @@ export default function Chats({chats}) {
 
 
   const filteredContacts = chatContacts.filter(chat => chat.name.toLowerCase().indexOf(searching.term.toLocaleLowerCase()) !== -1)
-  const filterResult = searching.term && !filteredContacts.length && <NotFound/>
+  const favorite = !searching.term && chatContacts.filter(chat => chat.name == current_user.username)[0]
 
-  if (!chats.length) return <Welcome currentUser={current_user}/>
+  const filterResult = searching.term && !filteredContacts.length && <NotFound/>
+  const welcome = chats.length < 2 && !searching.term && <Welcome currentUser={current_user}/>
+  const contacts = searching.term ? filteredContacts : chatContacts
 
   return (<>
       <Search 
@@ -34,7 +36,8 @@ export default function Chats({chats}) {
         />
       <Scrollable className='h-full'>
          {filterResult}
-          <Contacts chats={searching.term ? filteredContacts : chatContacts} />
+          <Contacts favorite={favorite} chats={contacts} />
+         {welcome} 
       </Scrollable>
 
       <div className='relative w-full z-50'>

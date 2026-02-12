@@ -3,16 +3,23 @@ module Messageable
 		@message = @messageable.messages.new(message_params)
 		@message.user = current_user
 		
+		if (params[:images]) 
+			@message.images.attach(params[:images])
+		end
+		
+			
 		if @message.save
-			ChatChannel.broadcast_to(@messageable, { message: @message, time_ago: helpers.time_ago_in_words(@message.created_at)} )
+			ChatChannel.broadcast_to(@messageable, { data: @message })
+			render json: {}, status: :ok 
 		else
 			render json: { error: "message could not be saved" }, status: :unprocessable_entity 
-		end	
+		end
+
 	end
 
 	private
 
 	def message_params
-		params.expect(message: [:body])
+		params.expect(message: [:body, images: [] ])
 	end
 end

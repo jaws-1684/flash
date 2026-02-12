@@ -41,8 +41,6 @@
 }
 
 .loader {
-    width: 48px;
-    height: 48px;
     border: 5px solid #FFF;
     border-bottom-color: #6e6d6d;
     border-radius: 50%;

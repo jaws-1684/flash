@@ -79,3 +79,7 @@ gem "omniauth-google-oauth2", "~> 1.2"
 gem "pg_search", "~> 2.3"
 
 gem "faker", "~> 3.6"
+
+gem "dotenv", "~> 3.2"
+
+gem "cloudinary", "~> 2.4"

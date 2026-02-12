@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from '@inertiajs/react'
-import { jsRoutes } from '../../paths'
+import { jsRoutes } from '../../lib/paths'
 import { memo } from 'react'
 export const  Avatar = ({avatar, alt}) => {
     return <img src={avatar} className="rounded-full w-12 h-12" alt={alt} />

@@ -1,8 +1,8 @@
 import React from 'react'
 
-function Scrollable({children, className=""}) {
+function Scrollable({children, className="", ...rest}) {
   return (
-    <div className={`scrollable overflow-scroll ${className}`}>{children}</div>
+    <div className={`scrollable overflow-scroll ${className}`} {...rest}>{children}</div>
   )
 }
 

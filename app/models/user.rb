@@ -2,7 +2,7 @@ class User < ApplicationRecord
   include PgSearch::Model
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  before_create :create_slug, :set_gravatar
+  before_create :create_slug, :set_gravatar, :create_save_chat
   before_update :create_slug
 
   pg_search_scope :search,
@@ -77,5 +77,8 @@ class User < ApplicationRecord
       if self.avatar.blank?
         self.avatar = gravatar
       end
+    end
+    def create_save_chat
+      Chat.create(creator_id: self, recipient_id: self)
     end  
 end

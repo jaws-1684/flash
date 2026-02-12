@@ -13,6 +13,7 @@ const railsRoutes = {
     chatMessages: "/chats/:id/messages",
     search: "/api/search?username=:id",
     newChat: "/chats",
+    destroyChat: "/chats/:id",
 }
 
 const jsRoutes = {}
@@ -27,7 +28,10 @@ for(const [key, value] of Object.entries(railsRoutes)) {
             return value.replace(/:id/g, argument)
         } else if (Array.isArray(argument)) {
             let i = 0
-            const result = value.replace(/:id/g, () => argument[i++]);
+            const result = value.replace(/:id/g, () => {
+                if (i > argument.length) return
+                argument[i++]}
+            );
             return result
         }
         

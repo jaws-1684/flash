@@ -59,5 +59,73 @@ export function ContactBook(props) {
     </svg>
   )
 }
+export function Options(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={200}
+      height={200}
+      viewBox="0 0 1024 1024"
+      {...props}
+    >
+      <path d="M388.8 896.4v-27.198c.6-2.2 1.6-4.2 2-6.4 8.8-57.2 56.4-102.4 112.199-106.2 62.4-4.4 115.2 31.199 132.4 89.199 2.2 7.6 3.8 15.6 5.8 23.4v27.2c-.6 1.8-1.6 3.399-1.8 5.399-8.6 52.8-46.6 93-98.6 104.4-4 .8-8 2-12 3h-27.2c-1.8-.6-3.6-1.6-5.4-1.8-52-8.4-91.599-45.4-103.6-96.8-1.2-5-2.6-9.6-3.8-14.2zm252.4-768.797l-.001 27.202c-.6 2.2-1.6 4.2-1.8 6.4-9 57.6-56.8 102.6-113.2 106.2-62.2 4-114.8-32-131.8-90.2-2.2-7.401-3.8-15-5.6-22.401v-27.2c.6-1.8 1.6-3.4 2-5.2 9.6-52 39.8-86 90.2-102.2 6.6-2.2 13.6-3.4 20.4-5.2h27.2c1.8.6 3.6 1.6 5.4 1.8 52.2 8.6 91.6 45.4 103.6 96.8 1.201 4.8 2.401 9.4 3.601 13.999zm-.001 370.801v27.2c-.6 2.2-1.6 4.2-2 6.4-9 57.4-58.6 103.6-114.6 106-63 2.8-116.4-35.2-131.4-93.8-1.6-6.2-3-12.4-4.4-18.6v-27.2c.6-2.2 1.6-4.2 2-6.4 8.8-57.4 58.6-103.601 114.6-106.2 63-3 116.4 35.2 131.4 93.8 1.6 6.4 3 12.6 4.4 18.8z" />
+    </svg>
+  )
+}
 
-
+export function Trash(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={200}
+      height={200}
+      viewBox="0 0 20 20"
+      {...props}
+    >
+      <path d="M6 2l2-2h4l2 2h4v2H2V2h4zM3 6h14l-1 14H4L3 6zm5 2v10h1V8H8zm3 0v10h1V8h-1z" />
+    </svg>
+  )
+}
+export function ImageUpload(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={200}
+      height={200}
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <g fill="none" stroke="#000" strokeLinecap="round" strokeWidth={1.5}>
+        <path
+          strokeLinejoin="round"
+          d="M21.25 13V8.5a5 5 0 00-5-5h-8.5a5 5 0 00-5 5v7a5 5 0 005 5h6.26"
+        />
+        <path
+          strokeLinejoin="round"
+          d="M3.01 17l2.74-3.2a2.2 2.2 0 012.77-.27 2.2 2.2 0 002.77-.27l2.33-2.33a4 4 0 015.16-.43l2.47 1.91M8.01 10.17a1.66 1.66 0 10-.02-3.32 1.66 1.66 0 00.02 3.32"
+        />
+        <path strokeMiterlimit={10} d="M18.707 15v5" />
+        <path
+          strokeLinejoin="round"
+          d="M21 17.105l-1.967-1.967a.458.458 0 00-.652 0l-1.967 1.967"
+        />
+      </g>
+    </svg>
+  )
+}
+export function Send(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={200}
+      height={200}
+      viewBox="0 0 48 48"
+      {...props}
+    >
+      <g fill="none" className={props.fill} strokeLinejoin="round" strokeWidth={4}>
+        <path d="M43 5L29.7 43l-7.6-17.1L5 18.3 43 5z" />
+        <path strokeLinecap="round" d="M43 5L22.1 25.9" />
+      </g>
+    </svg>
+  )
+}

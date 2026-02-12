@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect, useRef } from 'react'
-import { api } from '../../Api'
+import { api } from '../../lib/Api'
 
 export function useDebouncedGet({
   key,
@@ -42,7 +42,7 @@ export function useDebouncedGet({
       clearTimeout(debounceTimeout)
       clearTimeout(loadTimeoutRef.current)
     }
-  }, [query, debounceMs, fn])
+  }, [query, debounceMs])
 
   return [ data, loading, setData ]
 }

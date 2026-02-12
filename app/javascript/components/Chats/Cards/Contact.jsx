@@ -2,9 +2,9 @@ import React, { useContext } from 'react'
 import { Avatar } from '../Chat'
 import { ActionContainer, ChatName } from '../Chat'
 import ReactHtmlParser from 'react-html-parser'
-import { Api } from '../../../Api'
+import { api } from '../../../lib/Api'
 import { router, usePage } from '@inertiajs/react'
-import { jsRoutes } from '../../../paths'
+import { jsRoutes } from '../../../lib/paths'
 
 function Contact({contact}) {
   const { authenticity } = usePage().props

@@ -10,7 +10,7 @@ import Button from '../../components/ui/Button'
 import Layout from '../../components/Layouts/Layout'
 import ContainerSm from '../../components/Containers/ContainerSm'
 import { getPasswordErrors } from '../../components/Forms/Errors/getPasswordErrors'
-import { jsRoutes } from '../../paths'
+import { jsRoutes } from '../../lib/paths'
 import TextField from '../../components/Forms/Fields/TextField'
 import Oauth from '../../components/Auth/Oauth'
 
@@ -89,7 +89,7 @@ function Signup() {
 
         <ContainerSm>
             <p className='inline dark:text-gray-400 text-gray-700 mr-2'>Already have an account?</p>
-            <span>{<Link href={jsRoutes.loginPath()} method="get" name="Log in"/>}</span>
+            <span><Link href={jsRoutes.loginPath()} method="get" name="Log in"/></span>
         </ContainerSm>
         
         <Oauth/>
