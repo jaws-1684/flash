@@ -19,7 +19,11 @@ import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import useOutsideClick from "../../components/hooks/useOutsideClick";
 import Dropdown from "./components/ui/Dropdown";
 
-
+function debug(name, func) {
+  console.log("============+" + name + "+====================")
+  func()
+  console.log("============+" + name + "+====================")
+}
 export default function Messages({ chatId, recipient, chatMessages }) {
   const [messages, setMessages] = useState(chatMessages);
   const [isShowingOptions, setIsShowingOptions] = useState(false);
@@ -39,12 +43,23 @@ export default function Messages({ chatId, recipient, chatMessages }) {
     }
   }, [messages]);
 
+  debug("Messages state", () =>   console.log(messages))  
+
   useEffect(() => {
     subscribe(
       { channel: `ChatChannel`, id: chatId },
       {
-        received: ({ data }) => {
-          setMessages((prevMessages) => [data, ...prevMessages]);
+        received: ({ message }) => {
+          const prevMessages = [...messages]
+          const messageIdx = prevMessages.findIndex(mes => mes.id === message.id)
+       
+          if (messageIdx != -1) {
+            prevMessages.splice(messageIdx, 1, message)
+            setMessages(() => prevMessages)
+          } else {
+            setMessages((prevMessages) => [message, ...prevMessages]);
+          }
+          
         },
       },
     );
@@ -52,7 +67,7 @@ export default function Messages({ chatId, recipient, chatMessages }) {
     return () => {
       unsubscribe();
     };
-  }, [chatId]);
+  }, [chatId, messages]);
    
   useOutsideClick(() => setIsShowingOptions(false), dropDownRef)
 

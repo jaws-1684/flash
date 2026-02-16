@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_12_110516) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_16_113039) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -67,6 +67,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_12_110516) do
     t.string "image_keys"
     t.bigint "messageable_id"
     t.string "messageable_type"
+    t.boolean "soft_deleted"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["messageable_type", "messageable_id"], name: "index_messages_on_messageable"

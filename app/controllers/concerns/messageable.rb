@@ -9,7 +9,7 @@ module Messageable
 
 
     if @message.save
-      ChatChannel.broadcast_to(@messageable, { data: @message })
+      ChatChannel.broadcast_to(@messageable, { message: @message })
       render json: {}, status: :ok
     else
       render json: { error: "message could not be saved" }, status: :unprocessable_entity

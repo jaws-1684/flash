@@ -35,10 +35,31 @@ class Api {
     this.promiseMemo.set(key, promise);
     return promise;
   }
+  async delete ({
+    path,
+    authenticityToken,
+  }) {
+    const headers = {
+      "X-CSRF-Token": authenticityToken,
+    };
+    const response = await fetch(path, {
+      method: "DELETE",
+      headers: headers,
+    });
+
+    try {
+      if (response.ok) {
+        return
+      }
+      throw new Error("Could not save your data");
+    } catch (err) {
+      console.log(err);
+    }
+  }
   async post({
     path,
     authenticityToken,
-    body,
+    body = "",
     contentType = "application/json",
     formData = false,
   }) {
@@ -83,6 +104,7 @@ class Api {
   invalidateAll() {
     this.cache.clear();
   }
+ 
 }
 
 let api = new Api();

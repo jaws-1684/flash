@@ -1,4 +1,4 @@
-import { usePage, Link } from "@inertiajs/react";
+import { usePage } from "@inertiajs/react";
 import ImageContainer from "./ImageContainer";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,6 +8,7 @@ import useOutsideClick from "../../../components/hooks/useOutsideClick";
 import Dropdown from "./ui/Dropdown";
 import { jsRoutes } from "../../../lib/paths";
 import { Trash } from "../../../components/Icons/AppIcons";
+import { api } from "../../../lib/Api";
 
 const messageVariants = {
   base: "message p-2 rounded-2xl w-3xs lg:w-sm wrap-break-word text-white flex flex-col relative z-50",
@@ -17,6 +18,14 @@ const messageVariants = {
 };
 
 const MessageActionDropdown = ({isShowingDropdown, setIsShowingDropdown, messageId}) => {
+  const { authenticity } = usePage().props
+
+  const onDelete = () => {
+    api.delete({
+      path: jsRoutes.destroyMessagePath(messageId),
+      authenticityToken: authenticity.csrf_token,
+    })
+  }
   return (<>
   <div className="dropdown self-end absolute flex flex-col items-start justify-start">
         <div className="inline-flex items-start justify-end absolute right-0 top-0 bg-black/20 mask-x-from-50% mask-x-to-90% mask-b-from-50% mask-b-to-90% w-20 h-6"></div>
@@ -30,19 +39,24 @@ const MessageActionDropdown = ({isShowingDropdown, setIsShowingDropdown, message
        <Activity className="relative z-100" mode={isShowingDropdown ? "visible" : "hidden"}>
           <Dropdown classes="fixed right-20 lg:right-100 bg-red-200" title="Message">
 
-            <Link
+            <IconButton onClick={onDelete}
               className="p-2 inline-flex items-center  gap-2 p-2 cursor-pointer w-full hover:bg-gray-200/50 hover:rounded-md"
-              href={jsRoutes.destroyMessagePath(messageId)}
-              method="delete"
             >
               <Trash width="1rem" height="1rem" className="fill-red-700" />
               <p>Delete message</p>
-            </Link>
+            </IconButton>
           </Dropdown>
         </Activity> 
   </>)
 }
 export function Message({ message }) {
+  const { current_user } = usePage().props;
+
+  if (message.soft_deleted) {
+    const position = current_user.id == message.user_id ? "self-end" : ""
+    return <p className={"p-2 border-1 dark:border-gray-500  border-gray-200 rounded-xl rounded-md max-w-fit".concat(" ", position)}>This message was deleted</p>
+  }
+
   const [ isHovered, setIsHoverd ] = useState(false)
   const [ isShowingDropdown, setIsShowingDropdown ] = useState(false)
   const dropDownRef = useRef(null)
@@ -52,21 +66,22 @@ export function Message({ message }) {
     setIsHoverd(false)
   }, dropDownRef)
 
-  const { current_user } = usePage().props;
+  
   const { body, attached_images } = message;
 
   const onMouseEnter = (e) => setIsHoverd(true)
   const onMouseLeave = (e) => !isShowingDropdown && setIsHoverd(false)
+  const creator = current_user.id == message.user_id
 
   const classVariant =
-    current_user.id == message.user_id
+      creator
       ? messageVariants.self
       : messageVariants.foreign;
   const className = messageVariants.base.concat(" ", classVariant);
 
   return (
     <div ref={dropDownRef} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} className={className}>
-      { isHovered && <MessageActionDropdown
+      { creator && isHovered && <MessageActionDropdown
                        messageId={message.id}
                        isShowingDropdown={isShowingDropdown}
                        setIsShowingDropdown={setIsShowingDropdown} 
