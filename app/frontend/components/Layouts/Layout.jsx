@@ -30,7 +30,7 @@ export default function Layout({ title = "Flash", children }) {
 
   return (
     <>
-      <ThemeContext.Provider value={themeValue}>
+      <ThemeContext value={themeValue}>
         <Head>
           <title>{title}</title>
         </Head>
@@ -58,7 +58,7 @@ export default function Layout({ title = "Flash", children }) {
             {children}
           </div>
         </div>
-      </ThemeContext.Provider>
+      </ThemeContext>
     </>
   );
 }

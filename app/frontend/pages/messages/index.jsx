@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, router } from "@inertiajs/react";
 import useActionCable from "../../components/hooks/useActionCable";
 import useChannel from "../../components/hooks/useChannel";
@@ -16,6 +16,8 @@ import IconButton from "../../components/ui/IconButton";
 import { dateToWords } from "../../lib/dateToWords";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import useOutsideClick from "../../components/hooks/useOutsideClick";
+
 
 export default function Messages({ chatId, recipient, chatMessages }) {
   const [messages, setMessages] = useState(chatMessages);
@@ -27,12 +29,12 @@ export default function Messages({ chatId, recipient, chatMessages }) {
     Object.groupBy(messages, ({ created_at }) => dateToWords(created_at)),
   );
   const containerRef = useRef(null);
+  const dropDownRef = useRef(null)
 
   useEffect(() => {
     const element = containerRef.current;
     if (element) {
       element.scrollTop = element.scrollHeight;
-      console.log(element.scrollTop);
     }
   }, [messages]);
 
@@ -50,13 +52,15 @@ export default function Messages({ chatId, recipient, chatMessages }) {
       unsubscribe();
     };
   }, [chatId]);
+   
+  useOutsideClick(() => setIsShowingOptions(false), dropDownRef)
 
   let content;
   if (messages.length > 0) {
     content = (
       <Scrollable
         ref={containerRef}
-        className="w-full flex flex-col-reverse justify-start items-start gap-4 overflow-scroll h-[74dvh] lg:h-[75dvh] pr-4"
+        className="message-container w-full flex flex-col-reverse justify-start items-start gap-4 overflow-scroll h-[74dvh] lg:h-[75dvh] pr-4"
       >
         {messageGroups.map(([time, messages]) => (
           <MessageGroup key={time} time={time} messages={messages} />
@@ -71,16 +75,20 @@ export default function Messages({ chatId, recipient, chatMessages }) {
     );
   }
   const dropDown = (
-    <div className="p-4 bg-gray-200 dark:bg-gray-700 absolute top-20 right-0 rounded-sm z-50">
+    <div ref={dropDownRef} className="text-md p-4 border-1 dark:bg-gray-700 absolute top-20 right-0 rounded-sm z-100 divide-y">
+      <p className="text-center font-semibold mb-2 p-2">Options</p>
       <div className="flex gap-2 items-center">
-        <Trash width="1rem" height="1rem" className="fill-red-700" />
+       
         <Link
-          className="p-2 bg-red-700 hover:bg-red-700/50 rounded-sm w-full text-white"
+          className="p-2 inline-flex items-center  gap-2 p-2 cursor-pointer w-full hover:bg-gray-200/50 hover:rounded-md"
           href={jsRoutes.destroyChatPath(chatId)}
           method="delete"
         >
-          Delete chat
+          <Trash width="1rem" height="1rem" className="fill-red-700" />
+          <p>Delete conversation</p>
+          
         </Link>
+         
       </div>
     </div>
   );
@@ -111,7 +119,7 @@ export default function Messages({ chatId, recipient, chatMessages }) {
         </IconButton>
         {isShowingOptions && dropDown}
       </div>
-      {content}
+          {content}
       <MessageInput chatId={chatId} />
     </>
   );

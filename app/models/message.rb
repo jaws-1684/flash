@@ -15,8 +15,7 @@ class Message < ApplicationRecord
   private
     def attach_image_keys
       if images.attached?
-        options = { width: 200, height: 200, crop: :fill }
-        keys = images.map { |image| image.url }.join(",")
+        keys = images.map(&:url).join(",")
         self.update(image_keys: keys)
       end
     end

@@ -107,7 +107,7 @@ export default function MessageInput({ chatId }) {
               accept="image/png, image/jpeg"
               class="hidden"
             />
-            <ImageUpload width="1.5rem" height="1.5rem" />
+            <ImageUpload stroke="stroke-blue-700" className="hover:scale-120" width="1.5rem" height="1.5rem" />
           </label>
 
           {filesUploaded && fileCounter}

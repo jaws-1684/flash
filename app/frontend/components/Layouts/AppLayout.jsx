@@ -5,6 +5,7 @@ import Logo from "../Icons/Logo";
 import TextLogo from "../ui/TextLogo";
 import Avatar from "../ui/Avatar";
 import { Settings } from "../Icons/AppIcons";
+import ThemeToggle from "../Theme/ThemeToggle";
 
 function AppLayout({ children }) {
   const { current_user } = usePage().props;
@@ -22,6 +23,7 @@ function AppLayout({ children }) {
           </button>
 
           <div className="flex gap-4 items-center">
+            <ThemeToggle/>
             <IconButton onClick={() => router.visit("/settings")}>
               <Settings
                 width="1.3rem"

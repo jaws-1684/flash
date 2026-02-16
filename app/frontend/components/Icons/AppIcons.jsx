@@ -116,7 +116,7 @@ export function ImageUpload(props) {
       viewBox="0 0 24 24"
       {...props}
     >
-      <g fill="none" stroke="#000" strokeLinecap="round" strokeWidth={1.5}>
+      <g fill="none" className={props.stroke} strokeLinecap="round" strokeWidth={1.5}>
         <path
           strokeLinejoin="round"
           d="M21.25 13V8.5a5 5 0 00-5-5h-8.5a5 5 0 00-5 5v7a5 5 0 005 5h6.26"

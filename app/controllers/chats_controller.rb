@@ -4,13 +4,13 @@ class ChatsController < ApplicationController
   end
 
   def create
-    @exiting_chat = current_user.find_chat(params[:chat][:recipient_id])
+    @existing_chat = current_user.find_chat(params[:chat][:recipient_id])
 
     @chat = current_user.chats.build(chat_params)
     if @chat.save
       render json: { chat_id: @chat.id }
-    elsif !@exiting_chat.nil?
-      render json: { chat_id: @exiting_chat.id }
+    elsif !@existing_chat.nil?
+      render json: { chat_id: @existing_chat.id }
     else
       render json: @chat.errors, status: :unprocessable_entity
     end

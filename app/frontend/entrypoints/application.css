@@ -48,6 +48,7 @@
   animation: rotation 1s linear infinite;
 }
 
+
 @keyframes rotation {
   0% {
     transform: rotate(0deg);
@@ -55,4 +56,15 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+@media screen and (height < 700px){
+  .message-container {
+      height: 64dvh;
+    }
+}
+@media screen and (height < 800px) and (height > 700px){
+  .message-container {
+      height: 70dvh;
+    }
 }

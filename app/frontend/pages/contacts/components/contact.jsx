@@ -1,4 +1,3 @@
-import React, { useContext } from "react";
 import Avatar from "../../../components/ui/Avatar";
 import { Action } from "../../chats/components/Action";
 import Name from "../../chats/components/ui/Name";
