@@ -116,7 +116,7 @@ export default function MessageInput({ chatId }) {
 
       <IconButton
         onClick={onSubmit}
-        className="z-50 cursor-pointer hover:scale-120 ease-in-out"
+        className="cursor-pointer hover:scale-120 ease-in-out"
       >
         <Send
           width="2.5rem"

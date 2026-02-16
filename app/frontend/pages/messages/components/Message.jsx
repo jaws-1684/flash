@@ -1,10 +1,13 @@
-import { usePage } from "@inertiajs/react";
+import { usePage, Link } from "@inertiajs/react";
 import ImageContainer from "./ImageContainer";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import IconButton from "../../../components/ui/IconButton";
-import { Activity, useContext, useEffect, useRef, useState } from "react";
+import { Activity, useRef, useState } from "react";
 import useOutsideClick from "../../../components/hooks/useOutsideClick";
+import Dropdown from "./ui/Dropdown";
+import { jsRoutes } from "../../../lib/paths";
+import { Trash } from "../../../components/Icons/AppIcons";
 
 const messageVariants = {
   base: "message p-2 rounded-2xl w-3xs lg:w-sm wrap-break-word text-white flex flex-col relative z-50",
@@ -14,17 +17,30 @@ const messageVariants = {
 };
 
 const MessageActionDropdown = ({isShowingDropdown, setIsShowingDropdown, messageId}) => {
-  return (<div className="dropdown self-end absolute flex flex-col items-start justify-start">
+  return (<>
+  <div className="dropdown self-end absolute flex flex-col items-start justify-start">
         <div className="inline-flex items-start justify-end absolute right-0 top-0 bg-black/20 mask-x-from-50% mask-x-to-90% mask-b-from-50% mask-b-to-90% w-20 h-6"></div>
          <IconButton className="absolute right-0 top-0" onClick={() => {
               setIsShowingDropdown(!isShowingDropdown)
             }
           }>
           <FontAwesomeIcon icon={faAngleDown} />
-          </IconButton>
-       
-        <Activity className="fixed" mode={isShowingDropdown ? "visible" : "hidden"}>Delete message</Activity>    
-      </div>)
+          </IconButton>     
+  </div>
+       <Activity className="relative z-100" mode={isShowingDropdown ? "visible" : "hidden"}>
+          <Dropdown classes="fixed right-20 lg:right-100 bg-red-200" title="Message">
+
+            <Link
+              className="p-2 inline-flex items-center  gap-2 p-2 cursor-pointer w-full hover:bg-gray-200/50 hover:rounded-md"
+              href={jsRoutes.destroyMessagePath(messageId)}
+              method="delete"
+            >
+              <Trash width="1rem" height="1rem" className="fill-red-700" />
+              <p>Delete message</p>
+            </Link>
+          </Dropdown>
+        </Activity> 
+  </>)
 }
 export function Message({ message }) {
   const [ isHovered, setIsHoverd ] = useState(false)

@@ -17,6 +17,7 @@ import { dateToWords } from "../../lib/dateToWords";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import useOutsideClick from "../../components/hooks/useOutsideClick";
+import Dropdown from "./components/ui/Dropdown";
 
 
 export default function Messages({ chatId, recipient, chatMessages }) {
@@ -75,10 +76,7 @@ export default function Messages({ chatId, recipient, chatMessages }) {
     );
   }
   const dropDown = (
-    <div ref={dropDownRef} className="text-md p-4 border-1 dark:bg-gray-700 absolute top-20 right-0 rounded-sm z-100 divide-y">
-      <p className="text-center font-semibold mb-2 p-2">Options</p>
-      <div className="flex gap-2 items-center">
-       
+      <Dropdown classes="top-20 absolute right-0" ref={dropDownRef} title="Chat" >
         <Link
           className="p-2 inline-flex items-center  gap-2 p-2 cursor-pointer w-full hover:bg-gray-200/50 hover:rounded-md"
           href={jsRoutes.destroyChatPath(chatId)}
@@ -88,9 +86,7 @@ export default function Messages({ chatId, recipient, chatMessages }) {
           <p>Delete conversation</p>
           
         </Link>
-         
-      </div>
-    </div>
+      </Dropdown>
   );
 
   return (
