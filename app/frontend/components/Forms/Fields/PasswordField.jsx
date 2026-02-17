@@ -14,6 +14,7 @@ function PasswordField({
   placeholder = "Enter your password",
   value = "",
   error = "",
+  ...rest
 }) {
   const inputRef = useRef(null);
   return (
@@ -36,7 +37,7 @@ function PasswordField({
             type="password"
             value={value}
             placeholder={placeholder}
-            required
+            {...rest}
           />
         </div>
         <button className="z-50 absolute inset-y-0 end-0">

@@ -4,8 +4,10 @@ import { jsRoutes } from "../../../lib/paths";
 import { Action } from "./Action";
 import Name from "./ui/Name";
 import Avatar from "../../../components/ui/Avatar";
+import { formatTime } from "../../../lib/dateToWords";
 
 function Contacts({ chats, favorite }) {
+  console.log(chats)
   return (
     <>
       {favorite && (
@@ -20,15 +22,15 @@ function Contacts({ chats, favorite }) {
             <div className="flex w-full items-start justify-between">
               <div className="flex flex-col">
                 <Name name="Saved" />
-                <p className="text-sm text-gray-700">last_message</p>
+                <p className="text-sm text-gray-700">{favorite.last_message.body}</p>
               </div>
 
-              <p className="text-sm text-gray-700 p-1">2:58</p>
+              <p className="text-sm text-gray-700 p-1">{formatTime(favorite.last_message.created_at)}</p>
             </div>
           </Action>
         </Link>
       )}
-
+    
       {chats
         .filter((chat) => chat.id !== favorite?.id)
         .map((chat) => (
@@ -43,10 +45,10 @@ function Contacts({ chats, favorite }) {
               <div className="flex w-full items-start justify-between">
                 <div className="flex flex-col">
                   <Name name={chat.name} />
-                  <p className="text-sm text-gray-700">last_message</p>
+                  <p className="text-sm text-gray-700">{chat.last_message.body}</p>
                 </div>
 
-                <p className="text-sm text-gray-700 p-1">2:58</p>
+                <p className="text-sm text-gray-700 p-1">{formatTime(chat.last_message.created_at)}</p>
               </div>
             </Action>
           </Link>

@@ -20,7 +20,7 @@ class ChatsController < ApplicationController
     if @chat.destroy
       redirect_to root_path, alert: "Chat deleted"
     else
-        render inertia: "messages/index", props: {
+      render inertia: "messages/index", props: {
         chatId: @chat.id,
         recipient: current_user.chat_recipient(@chat),
         chatMessages:  order_by_creation_time(@chat.messages)

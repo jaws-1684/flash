@@ -83,3 +83,5 @@ gem "faker", "~> 3.6"
 gem "dotenv", "~> 3.2"
 
 gem "cloudinary", "~> 2.4"
+
+gem "active_storage_validations", "~> 3.0"

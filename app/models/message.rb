@@ -1,8 +1,10 @@
 class Message < ApplicationRecord
   after_create :attach_image_keys
+
   belongs_to :messageable, polymorphic: true
   belongs_to :user
   has_many_attached :images
+  validates :images, limit: { max: 10 }, content_type: ['image/png', 'image/jpeg']
 
   def as_json(options = {})
       unless soft_deleted

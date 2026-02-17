@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   inertia "/contacts" => "contacts/contacts"
+  inertia "/settings" => "settings/settings"
   scope "/api" do
     get "/search", to: "users#search"
   end
@@ -20,12 +21,13 @@ Rails.application.routes.draw do
     get "login", to: "users/sessions#new"
     get "signup", to: "users/registrations#new"
     post "signup", to: "users/registrations#create"
+    patch "registrations", to: "users/registrations#update"
     post "login", to: "users/sessions#create"
     match "logout", to: "users/sessions#destroy", via: Devise.mappings[:user].sign_out_via
   end
 
   resources :chats
-  resources :messages, only: [:destroy]
+  resources :messages, only: [:destroy, :update]
 
   # Redirect to localhost from 127.0.0.1 to use same IP address with Vite server
   constraints(host: "127.0.0.1") do

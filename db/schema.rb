@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_16_113039) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_17_123302) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -52,6 +52,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_113039) do
     t.index ["recipient_id", "creator_id"], name: "index_chats_on_recipient_id_and_creator_id", unique: true
   end
 
+  create_table "group_chats", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_group_chats_on_user_id"
+  end
+
   create_table "images", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "imageable_id", null: false
@@ -64,6 +72,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_113039) do
   create_table "messages", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
+    t.boolean "edited"
     t.string "image_keys"
     t.bigint "messageable_id"
     t.string "messageable_type"
@@ -81,6 +90,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_113039) do
     t.string "searchable_type"
     t.datetime "updated_at", null: false
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
+  end
+
+  create_table "user_group_chats", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "group_chat_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["group_chat_id"], name: "index_user_group_chats_on_group_chat_id"
+    t.index ["user_id"], name: "index_user_group_chats_on_user_id"
   end
 
   create_table "user_providers", force: :cascade do |t|
@@ -109,6 +127,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_113039) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "group_chats", "users"
   add_foreign_key "messages", "users"
+  add_foreign_key "user_group_chats", "group_chats"
+  add_foreign_key "user_group_chats", "users"
   add_foreign_key "user_providers", "users"
 end

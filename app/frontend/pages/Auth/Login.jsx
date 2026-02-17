@@ -56,6 +56,7 @@ function Login() {
           onChange={(e) => setData("password", e.target.value)}
           value={data.password}
           error={inputErrors.password}
+          required
         >
           <Link
             name="Forgot ?"

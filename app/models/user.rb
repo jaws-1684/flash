@@ -2,8 +2,8 @@ class User < ApplicationRecord
   include PgSearch::Model
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  before_create :create_slug, :set_gravatar, :create_save_chat
-  before_update :create_slug
+  before_create :set_gravatar, :create_save_chat
+  before_validation :generate_slug
 
   pg_search_scope :search,
                   against: :username,
@@ -27,8 +27,11 @@ class User < ApplicationRecord
   has_many :user_providers, dependent: :destroy
   has_many :chats, class_name: "Chat", foreign_key: "creator_id"
   has_many :messages
-  validates :username, :slug, uniqueness: :true
+  validates :username, :slug, uniqueness: :true, length: { minimum: 6 }
   validates :email, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  has_one_attached :image
+  validates :image, content_type: ['image/png', 'image/jpeg']
+
 
   def conversations
     Chat.where(creator_id: self).or(Chat.where(recipient_id: self))
@@ -37,13 +40,14 @@ class User < ApplicationRecord
 
   def chat_names
     get_recipient = lambda { |chat|  chat_recipient(chat) }
-    chats = conversations.includes(:creator, :recipient)
+    chats = conversations.includes(:creator, :recipient, :messages)
     chats.map do |chat; recipient|
       recipient = get_recipient.call(chat)
       {
           id: chat.id,
           name: recipient.username,
-          avatar: recipient.avatar
+          avatar: recipient.avatar,
+          last_message: chat.messages.order(:created_at).last
       }
     end
   end
@@ -56,12 +60,17 @@ class User < ApplicationRecord
   end
 
   def as_json(options = {})
-      super({ only: [ :username, :id, :avatar, :pg_search_highlight ] }.merge(options))
+      super({ except: [ avatar, :password, :password_confirmation, :slug ], methods: [:avatar_image] }.merge(options))
+  end
+
+  def avatar_image
+    return image.url if image.attached?
+    self.avatar 
   end
 
   private
-    def create_slug
-      self.slug = slug
+    def generate_slug
+     self.slug ||= name.parameterize if name
     end
 
     def slug

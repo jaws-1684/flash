@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { createContext, useEffect } from "react";
 import { useState, useMemo } from "react";
 import { usePage } from "@inertiajs/react";
 import Success from "../Alerts/Success";
 import Danger from "../Alerts/Danger";
 import { ThemeContext } from "../Theme/ThemeContext.jsx";
 import { Head } from "@inertiajs/react";
+
 
 export default function Layout({ title = "Flash", children }) {
   const { flash } = usePage().props;
@@ -14,6 +15,7 @@ export default function Layout({ title = "Flash", children }) {
     notice: true,
     alert: true,
   });
+
 
   const [theme, setTheme] = useState(getTheme);
   const themeValue = useMemo(() => ({ theme, setTheme }), [theme]);

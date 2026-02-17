@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, createContext } from "react";
 import { Link, router } from "@inertiajs/react";
 import useActionCable from "../../components/hooks/useActionCable";
 import useChannel from "../../components/hooks/useChannel";
@@ -18,18 +18,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import useOutsideClick from "../../components/hooks/useOutsideClick";
 import Dropdown from "./components/ui/Dropdown";
+import { useReducer } from "react";
+import messageReducer from "./reducers/messageReducer";
 
-function debug(name, func) {
-  console.log("============+" + name + "+====================")
-  func()
-  console.log("============+" + name + "+====================")
-}
+export const MessageContext = createContext(null)
+
 export default function Messages({ chatId, recipient, chatMessages }) {
-  const [messages, setMessages] = useState(chatMessages);
+  const [messages, dispatch] = useReducer(messageReducer, chatMessages);
+
   const [isShowingOptions, setIsShowingOptions] = useState(false);
   const { actionCable } = useActionCable(baseURI.webSocket);
   const { subscribe, unsubscribe } = useChannel(actionCable);
 
+  const [ currentMessage, setCurrentMessage ] = useState({
+    body: "",
+    id: null,
+    isEdited: false
+  })
   const messageGroups = Object.entries(
     Object.groupBy(messages, ({ created_at }) => dateToWords(created_at)),
   );
@@ -43,31 +48,21 @@ export default function Messages({ chatId, recipient, chatMessages }) {
     }
   }, [messages]);
 
-  debug("Messages state", () =>   console.log(messages))  
-
   useEffect(() => {
     subscribe(
       { channel: `ChatChannel`, id: chatId },
       {
-        received: ({ message }) => {
-          const prevMessages = [...messages]
-          const messageIdx = prevMessages.findIndex(mes => mes.id === message.id)
-       
-          if (messageIdx != -1) {
-            prevMessages.splice(messageIdx, 1, message)
-            setMessages(() => prevMessages)
-          } else {
-            setMessages((prevMessages) => [message, ...prevMessages]);
-          }
-          
-        },
+        received: ({ message }) => dispatch({
+          type: 'update',
+          payload: message
+        }),
       },
     );
 
     return () => {
       unsubscribe();
     };
-  }, [chatId, messages]);
+  }, [chatId]);
    
   useOutsideClick(() => setIsShowingOptions(false), dropDownRef)
 
@@ -106,6 +101,7 @@ export default function Messages({ chatId, recipient, chatMessages }) {
 
   return (
     <>
+      <MessageContext value={{ currentMessage, setCurrentMessage }}>
       <div className="h-20 p-2 flex justify-between items-center relative">
         <div className="flex gap-4 items-center justify-start">
           <IconButton
@@ -120,7 +116,7 @@ export default function Messages({ chatId, recipient, chatMessages }) {
 
           <Avatar
             className="size-12"
-            avatar={recipient.avatar}
+            avatar={recipient.avatar_image}
             alt="chat avatar"
           />
           <Name name={recipient.username} />
@@ -132,6 +128,7 @@ export default function Messages({ chatId, recipient, chatMessages }) {
       </div>
           {content}
       <MessageInput chatId={chatId} />
+      </MessageContext>
     </>
   );
 }

@@ -49,7 +49,7 @@ class Api {
 
     try {
       if (response.ok) {
-        return
+        return response
       }
       throw new Error("Could not save your data");
     } catch (err) {
@@ -62,6 +62,7 @@ class Api {
     body = "",
     contentType = "application/json",
     formData = false,
+    method = "POST",
   }) {
     const headers = {
       "X-CSRF-Token": authenticityToken,
@@ -72,7 +73,7 @@ class Api {
     const rBody = formData ? body : JSON.stringify(body);
 
     const response = await fetch(path, {
-      method: "POST",
+      method: method,
       headers: headers,
       body: rBody,
     });

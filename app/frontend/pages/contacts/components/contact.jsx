@@ -29,7 +29,7 @@ function Contact({ contact }) {
   return (
     <Action onClick={onChatClick}>
       <Avatar
-        avatar={contact.avatar}
+        avatar={contact.avatar_image}
         className="size-12"
         alt="contact avatar"
       />

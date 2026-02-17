@@ -36,3 +36,10 @@ export function dateToWords(isoDate) {
 
   return date.toLocaleDateString("en-US", options);
 }
+
+export function formatTime(time) {
+  let date = new Date(time)
+  const hours = date.getHours()
+  const minutes = date.getMinutes()
+  return `${hours}:${minutes}`
+}

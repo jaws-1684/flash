@@ -77,6 +77,7 @@ function Signup() {
           onChange={(e) => setData("password", e.target.value)}
           value={data.password}
           error={inputErrors.password}
+          required
         />
         <PasswordField
           onChange={(e) => setData("password_confirmation", e.target.value)}
@@ -84,6 +85,7 @@ function Signup() {
           name="password_confirmation"
           label="Password confirmation"
           error={inputErrors.passwordConfirmation}
+          required
         />
 
         <Button type="submit" color="blue" disabled={processing}>

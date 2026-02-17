@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { jsRoutes } from "../../../lib/paths";
 import IconButton from "../../../components/ui/IconButton";
 import { ImageUpload, Send } from "../../../components/Icons/AppIcons";
+import useMessage from "../../../components/hooks/useMessage";
 
 const classVariants = {
   textInput:
@@ -34,7 +35,7 @@ const formatedMessageFormObject = (files, body) => {
 };
 
 export default function MessageInput({ chatId }) {
-  const [body, setBody] = useState("");
+  const { body, setBody, id, isEditing, clear } = useMessage()
   const [files, setFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -69,7 +70,30 @@ export default function MessageInput({ chatId }) {
       .then(() => {
         setIsLoading(false);
         setFiles([]);
-        setBody("");
+        clear();
+      });
+    messageRef.current.focus();
+  };
+
+  const onEditSubmit = (e) => {
+    e.preventDefault();
+    
+
+    if (!body) return;
+
+    setIsLoading(true);
+
+    api
+      .post({
+        path: jsRoutes.messagePath(id),
+        authenticityToken: authenticity.csrf_token,
+        body: { message: { body: body } },
+        method: "PATCH"
+      })
+      .then(() => {
+        setIsLoading(false);
+        setFiles([]);
+        clear()
       });
     messageRef.current.focus();
   };
@@ -85,7 +109,7 @@ export default function MessageInput({ chatId }) {
     <div className="flex gap-2 mt-2 relative">
       {isLoading && loader}
 
-      <Form className="w-full" onSubmit={onSubmit}>
+      <Form className="w-full flex" onSubmit={isEditing ? onEditSubmit : onSubmit}>
         <div className="relative w-full">
           <div className="relative">
             <input
@@ -112,19 +136,21 @@ export default function MessageInput({ chatId }) {
 
           {filesUploaded && fileCounter}
         </div>
-      </Form>
 
-      <IconButton
-        onClick={onSubmit}
-        className="cursor-pointer hover:scale-120 ease-in-out"
-      >
+        <IconButton
+          type="submit"
+          className="ml-2 cursor-pointer hover:scale-120 ease-in-out"
+        >
         <Send
           width="2.5rem"
           height="2.5em"
           className="bg-green-600 p-2 rounded-full"
           fill="stroke-white"
         />
-      </IconButton>
+       </IconButton>
+      </Form>
+
+     
     </div>
   );
 }

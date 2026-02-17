@@ -33,7 +33,7 @@ function AppLayout({ children }) {
             </IconButton>
 
             <Avatar
-              avatar={current_user.avatar}
+              avatar={current_user.avatar_image}
               alt={current_user.username + " image"}
               className={"size-8 overflow-hidden"}
             />
