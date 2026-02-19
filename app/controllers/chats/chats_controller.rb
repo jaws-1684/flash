@@ -4,9 +4,10 @@ class Chats::ChatsController < ApplicationController
     def show
       if @messageable
         render inertia: "messages/index", props: {
-          chatId: @messageable.id,
+          chat: @messageable,
           recipient: current_user.chat_recipient(@messageable),
-          chatMessages:  @messageable.messages.order(created_at: :desc)
+          chatMessages:  @messageable.messages,
+          type: :private
         }
       # render :json => order_by_creation_time(@messageable.messages)
       else

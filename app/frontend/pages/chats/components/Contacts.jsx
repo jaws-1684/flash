@@ -1,58 +1,30 @@
 import React from "react";
-import { Link } from "@inertiajs/react";
 import { jsRoutes } from "../../../lib/paths";
-import { Action } from "./Action";
-import Name from "./ui/Name";
-import Avatar from "../../../components/ui/Avatar";
-import { formatTime } from "../../../lib/dateToWords";
+import ChatLink from "../../../components/ChatLink";
+import { Header } from "../../../components/ui/Title";
 
-function Contacts({ chats, favorite }) {
-  console.log(chats)
+function Contacts({ chats, groupChats, favorite }) {
+ 
+  const saved = favorite && <ChatLink key={favorite.id} chat={favorite} name="Saved" href={jsRoutes.chatMessagesPath(favorite.id)}/>
+
+  const groups = groupChats.length ? <>
+    <Header text="Groups" className="text-gray-700 ml-2"/>
+    {groupChats.map((chat) => (<ChatLink key={"group-"+chat.id} chat={chat} name={chat.name} href={jsRoutes.groupChatMessagesPath(chat.slug)}/>))}
+  </> : null
+
+  const chats_block = chats.length ? <>
+     <Header text="Chats" className="text-gray-700 ml-2"/>
+     {chats
+        .filter((chat) => chat.id !== favorite?.id)
+        .map((chat) => ( <ChatLink key={"chat-"+chat.id} chat={chat} name={chat.name} href={jsRoutes.chatMessagesPath(chat.id)}/>))}
+  </> : null
   return (
     <>
-      {favorite && (
-        <Link key={favorite.id} href={jsRoutes.chatMessagesPath(favorite.id)}>
-          <Action>
-            <Avatar
-              className="size-12"
-              avatar={favorite.avatar}
-              alt="chat avatar"
-            />
+    {saved}
 
-            <div className="flex w-full items-start justify-between">
-              <div className="flex flex-col">
-                <Name name="Saved" />
-                <p className="text-sm text-gray-700">{favorite.last_message.body}</p>
-              </div>
+    {groups}      
 
-              <p className="text-sm text-gray-700 p-1">{formatTime(favorite.last_message.created_at)}</p>
-            </div>
-          </Action>
-        </Link>
-      )}
-    
-      {chats
-        .filter((chat) => chat.id !== favorite?.id)
-        .map((chat) => (
-          <Link key={chat.id} href={jsRoutes.chatMessagesPath(chat.id)}>
-            <Action>
-              <Avatar
-                className="size-12"
-                avatar={chat.avatar}
-                alt="chat avatar"
-              />
-
-              <div className="flex w-full items-start justify-between">
-                <div className="flex flex-col">
-                  <Name name={chat.name} />
-                  <p className="text-sm text-gray-700">{chat.last_message.body}</p>
-                </div>
-
-                <p className="text-sm text-gray-700 p-1">{formatTime(chat.last_message.created_at)}</p>
-              </div>
-            </Action>
-          </Link>
-        ))}
+    {chats_block}
     </>
   );
 }

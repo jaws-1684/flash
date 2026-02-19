@@ -14,4 +14,11 @@ class ApplicationController < ActionController::Base
     def configure_permitted_parameters
       devise_parameter_sanitizer.permit(:sign_up, keys: [ :username ])
     end
+    def broadcast_to messageable, message, type
+      channels = {
+        "Chat" => -> { ChatChannel.broadcast_to(messageable, message) },
+        "GroupChat" => -> { ChatGroupChannel.broadcast_to(messageable, message) } 
+      }
+      channels[type].call
+    end
 end

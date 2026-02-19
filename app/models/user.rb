@@ -27,6 +27,11 @@ class User < ApplicationRecord
   has_many :user_providers, dependent: :destroy
   has_many :chats, class_name: "Chat", foreign_key: "creator_id"
   has_many :messages
+
+  has_many :user_group_chats
+  has_many :group_chats
+  has_many :chat_groups, through: :user_group_chats, source: :group_chat
+
   validates :username, :slug, uniqueness: :true, length: { minimum: 6 }
   validates :email, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   has_one_attached :image
@@ -46,33 +51,32 @@ class User < ApplicationRecord
       {
           id: chat.id,
           name: recipient.username,
-          avatar: recipient.avatar,
-          last_message: chat.messages.order(:created_at).last
+          avatar_image: recipient.avatar,
+          last_message: chat.last_message
       }
     end
   end
+
   def chat_recipient(chat)
     chat.recipient == self ? chat.creator : chat.recipient
   end
 
-  def find_chat(recipient_id)
-    Chat.where(creator_id: self).where(recipient_id: recipient_id).first
+  def find_or_initialize_chat(chat_params)
+    Chat.where(creator_id: self).where(recipient_id: chat_params[:recipient_id]).first || Chat.new(chat_params)
   end
 
   def as_json(options = {})
-      super({ except: [ avatar, :password, :password_confirmation, :slug ], methods: [:avatar_image] }.merge(options))
-  end
-
-  def avatar_image
-    return image.url if image.attached?
-    self.avatar 
+      super({ except: [ :avatar, :password, :password_confirmation, :slug ], methods: [:avatar_image] }.merge(options))
   end
 
   private
     def generate_slug
      self.slug ||= name.parameterize if name
     end
-
+    def avatar_image
+      return image.url if image.attached?
+      self&.avatar ? avatar : "" 
+    end
     def slug
       self.username.parameterize
     end

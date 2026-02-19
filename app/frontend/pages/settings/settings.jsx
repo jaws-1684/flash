@@ -10,8 +10,8 @@ import EmailField from "../../components/Forms/Fields/EmailField";
 import TextField from "../../components/Forms/Fields/TextField";
 import PasswordField from "../../components/Forms/Fields/PasswordField";
 import { jsRoutes } from "../../lib/paths";
-import Avatar from "../../components/ui/Avatar";
-
+import ImageUploadField from "../../components/Forms/Fields/ImageUploadField";
+         
 function Settings() {
  const { authenticity, current_user } = usePage().props
 
@@ -80,15 +80,7 @@ function Settings() {
       <Title className="text-center mt-2 text-gray-700" text="Settings" />
 
       <form onSubmit={onSubmit}>
-          <div className="flex gap-4 size-md mb-2">
-            <Avatar className="size-24" avatar={current_user.avatar_image} alt="Profile avatar"/>
-            <div className="grow-1">
-              <label class="block mb-2.5 text-sm font-medium text-heading" for="file_input">Avatar</label>
-              <input ref={avatarRef} class="cursor-pointer flex mt-2 w-full border rounded-md py-2 px-3 focus:outline-hidden dark:bg-gray-700/50 dark:border-gray-500 dark:text-gray-300 dark:placeholder-gray-400 dark:focus:ring-2 dark:focus:border-transparent" aria-describedby="file_input_help" id="file_input" type="file"/>
-              <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, or JPG.</p>
-            </div>
-           
-          </div>
+        <ImageUploadField avatar={current_user.avatar_image} label="Avatar" ref={avatarRef}/>
          
         <EmailField
           onChange={(e) => setData({...data, email: e.target.value })}

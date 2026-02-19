@@ -97,7 +97,7 @@ class Api {
       const controller = this.abortControllers.get(key);
       return controller.signal.aborted;
     }
-    return controller?.signal.aborted ?? false;
+    return false;
   }
   invalidate(key) {
     if (this.cache.has(key)) this.cache.delete(key);

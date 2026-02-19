@@ -1,16 +1,12 @@
 class ChatsController < ApplicationController
   def index
-    render inertia: { chats: current_user.chat_names }
+    render inertia: { chats: current_user.chat_names, group_chats: current_user.group_chats }
   end
 
   def create
-    @existing_chat = current_user.find_chat(params[:chat][:recipient_id])
-
-    @chat = current_user.chats.build(chat_params)
+    @chat = current_user.find_or_initialize_chat(chat_params)
     if @chat.save
       render json: { chat_id: @chat.id }
-    elsif !@existing_chat.nil?
-      render json: { chat_id: @existing_chat.id }
     else
       render json: @chat.errors, status: :unprocessable_entity
     end
@@ -20,11 +16,7 @@ class ChatsController < ApplicationController
     if @chat.destroy
       redirect_to root_path, alert: "Chat deleted"
     else
-      render inertia: "messages/index", props: {
-        chatId: @chat.id,
-        recipient: current_user.chat_recipient(@chat),
-        chatMessages:  order_by_creation_time(@chat.messages)
-      }
+      redirect_to @chat, alert: "Something went wrong"
     end
   end
 

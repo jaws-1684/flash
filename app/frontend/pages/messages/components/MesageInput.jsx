@@ -35,7 +35,7 @@ const formatedMessageFormObject = (files, body) => {
 };
 
 export default function MessageInput({ chatId }) {
-  const { body, setBody, id, isEditing, clear } = useMessage()
+  const { body, setBody, id, isEditing, clear, type } = useMessage()
   const [files, setFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -49,9 +49,10 @@ export default function MessageInput({ chatId }) {
     messageRef.current.focus();
   }, [chatId]);
 
+
   const onTextInputChange = (e) => setBody(e.target.value);
   const onFileUpload = (e) => setFiles(e.target.files);
-
+  console.log(type)
   const onSubmit = (e) => {
     e.preventDefault();
     const formData = formatedMessageFormObject(files, body);
@@ -62,7 +63,7 @@ export default function MessageInput({ chatId }) {
 
     api
       .post({
-        path: jsRoutes.chatMessagesPath(chatId),
+        path: type === "group" ? jsRoutes.groupChatMessagesPath(chatId) : jsRoutes.chatMessagesPath(chatId),
         authenticityToken: authenticity.csrf_token,
         body: formData,
         formData: true,
@@ -85,7 +86,7 @@ export default function MessageInput({ chatId }) {
 
     api
       .post({
-        path: jsRoutes.messagePath(id),
+        path: type === jsRoutes.messagePath(id),
         authenticityToken: authenticity.csrf_token,
         body: { message: { body: body } },
         method: "PATCH"

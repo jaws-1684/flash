@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
 	before_action :set_message_and_messageable
-	after_action :broadcast_to_chat
+	after_action { |controller| controller.send(:broadcast_to, @messageable, { message: @message }, @message.messageable_type )}
 
 	def destroy
 		if @message.soft_delete!
@@ -23,8 +23,5 @@ class MessagesController < ApplicationController
 		end
 		def message_params
 			params.expect(message: [ :body, images: [] ])
-		end
-		def broadcast_to_chat
-			ChatChannel.broadcast_to(@messageable, { message: @message })
 		end
 end

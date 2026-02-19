@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, createContext } from "react";
-import { Link, router } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import useActionCable from "../../components/hooks/useActionCable";
 import useChannel from "../../components/hooks/useChannel";
 import { baseURI, jsRoutes } from "../../lib/paths";
@@ -23,9 +23,11 @@ import messageReducer from "./reducers/messageReducer";
 
 export const MessageContext = createContext(null)
 
-export default function Messages({ chatId, recipient, chatMessages }) {
-  const [messages, dispatch] = useReducer(messageReducer, chatMessages);
+export default function Messages({ chat, recipient, chatMessages, type }) {
 
+  const [messages, dispatch] = useReducer(messageReducer, chatMessages);
+  const { current_user } = usePage().props
+  
   const [isShowingOptions, setIsShowingOptions] = useState(false);
   const { actionCable } = useActionCable(baseURI.webSocket);
   const { subscribe, unsubscribe } = useChannel(actionCable);
@@ -41,6 +43,40 @@ export default function Messages({ chatId, recipient, chatMessages }) {
   const containerRef = useRef(null);
   const dropDownRef = useRef(null)
 
+  const chatId = chat.id
+
+  let name
+  let channel
+  let destroyLink
+
+  switch(type) {
+    case "group":
+      name = chat.name
+      channel = "ChatGroupChannel"
+      destroyLink = chat.user_id === current_user.id && <Link
+          className="p-2 inline-flex items-center  gap-2 p-2 cursor-pointer w-full hover:bg-gray-200/50 hover:rounded-md"
+          href={jsRoutes.destroyChatGroupPath(chatId)}
+          method="delete"
+        >
+          <Trash width="1rem" height="1rem" className="fill-red-700" />
+          <p>Delete Group</p>
+          
+        </Link> 
+      break
+    default:
+      name = recipient.username
+      channel = "ChatChannel"
+      destroyLink = <Link
+          className="p-2 inline-flex items-center  gap-2 p-2 cursor-pointer w-full hover:bg-gray-200/50 hover:rounded-md"
+          href={jsRoutes.destroyChatPath(chatId) }
+          method="delete"
+        >
+          <Trash width="1rem" height="1rem" className="fill-red-700" />
+          <p>Delete conversation</p>
+          
+        </Link> 
+  }
+
   useEffect(() => {
     const element = containerRef.current;
     if (element) {
@@ -50,12 +86,13 @@ export default function Messages({ chatId, recipient, chatMessages }) {
 
   useEffect(() => {
     subscribe(
-      { channel: `ChatChannel`, id: chatId },
+      { channel: channel, id: chatId },
       {
-        received: ({ message }) => dispatch({
+        received: ({ message }) => {
+          dispatch({
           type: 'update',
           payload: message
-        }),
+        })},
       },
     );
 
@@ -86,22 +123,14 @@ export default function Messages({ chatId, recipient, chatMessages }) {
     );
   }
   const dropDown = (
-      <Dropdown classes="top-20 absolute right-0" ref={dropDownRef} title="Chat" >
-        <Link
-          className="p-2 inline-flex items-center  gap-2 p-2 cursor-pointer w-full hover:bg-gray-200/50 hover:rounded-md"
-          href={jsRoutes.destroyChatPath(chatId)}
-          method="delete"
-        >
-          <Trash width="1rem" height="1rem" className="fill-red-700" />
-          <p>Delete conversation</p>
-          
-        </Link>
+      <Dropdown classes="top-20 absolute right-0" ref={dropDownRef} title={name} >
+        { destroyLink }
       </Dropdown>
   );
 
   return (
     <>
-      <MessageContext value={{ currentMessage, setCurrentMessage }}>
+      <MessageContext value={{ currentMessage, setCurrentMessage, type }}>
       <div className="h-20 p-2 flex justify-between items-center relative">
         <div className="flex gap-4 items-center justify-start">
           <IconButton
@@ -116,10 +145,10 @@ export default function Messages({ chatId, recipient, chatMessages }) {
 
           <Avatar
             className="size-12"
-            avatar={recipient.avatar_image}
+            avatar={recipient?.avatar_image || chat?.avatar_image}
             alt="chat avatar"
           />
-          <Name name={recipient.username} />
+          <Name name={name} />
         </div>
         <IconButton onClick={() => setIsShowingOptions(!isShowingOptions)}>
           <Options width="1rem" height="1rem" className="dark:fill-white" />

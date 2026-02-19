@@ -11,6 +11,7 @@ import { Trash } from "../../../components/Icons/AppIcons";
 import { api } from "../../../lib/Api";
 import useMessage from "../../../components/hooks/useMessage";
 import { formatTime } from "../../../lib/dateToWords";
+import { truncate } from "../../../lib/truncate";
 
 const messageVariants = {
   base: "message p-2 rounded-2xl w-3xs lg:w-sm wrap-break-word text-white flex flex-col relative",
@@ -19,12 +20,12 @@ const messageVariants = {
     "bg-gray-400 dark:bg-gray-700 shadow-lg shadow-gray-400/50 dark:shadow-gray-700/50",
 };
 
-const MessageActionDropdown = ({isShowingDropdown, setIsShowingDropdown, messageId, onEdit}) => {
+const MessageActionDropdown = ({isShowingDropdown, setIsShowingDropdown, message, onEdit}) => {
   const { authenticity } = usePage().props
 
   const onDelete = () => {
     api.delete({
-      path: jsRoutes.messagePath(messageId),
+      path: jsRoutes.messagePath(message.id),
       authenticityToken: authenticity.csrf_token,
     })
   }
@@ -40,7 +41,7 @@ const MessageActionDropdown = ({isShowingDropdown, setIsShowingDropdown, message
           </IconButton>     
   </div>
        <Activity className="relative" mode={isShowingDropdown ? "visible" : "hidden"}>
-          <Dropdown classes="absolute z-50 right-20 lg:right-100 bg-red-200" title="Message">
+          <Dropdown classes="absolute z-50 right-20 lg:right-100 bg-red-200" title={truncate(message.body, 20)}>
 
             <div className="flex flex-col">
                 <IconButton onClick={onDelete}
@@ -100,7 +101,7 @@ export function Message({ message }) {
     <div ref={dropDownRef} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} className={className}>
       {message.edited && <p className="text-xs text-gray-900">Edited</p> }
       { creator && isHovered && <MessageActionDropdown
-                       messageId={message.id}
+                       message={message}
                        isShowingDropdown={isShowingDropdown}
                        setIsShowingDropdown={setIsShowingDropdown}
                        onEdit={onEdit} 

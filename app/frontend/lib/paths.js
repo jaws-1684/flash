@@ -13,8 +13,11 @@ const railsRoutes = {
   search: "/api/search?username=:id",
   newChat: "/chats",
   destroyChat: "/chats/:id",
+  destroyChatGroup: "/group_chats/:id",
+  chatGroups: "/group_chats",
   message: "/messages/:id",
-  userUpdate: "/registrations"
+  userUpdate: "/registrations",
+  groupChatMessages: "/group_chats/:id/messages"
 };
 
 const jsRoutes = {};
