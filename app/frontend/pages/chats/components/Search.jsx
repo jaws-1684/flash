@@ -20,7 +20,7 @@ function Search({ searchTerm, setSearchTerm, placeholder }) {
       <div className="relative">
         <input
           placeholder={placeholder}
-          className="truncate w-full pl-8 border-0 rounded-full p-2 tracking-tight bg-gray-200/40 dark:color-white dark:placeholder-gray-400 dark:focus-bg-gray-500 dark:bg-gray-500"
+          className="truncate w-full pl-8 border-0 rounded-full inset-shadow-xs p-2 tracking-tight bg-gray-200/40 dark:color-white dark:placeholder-gray-400 dark:focus-bg-gray-500 dark:bg-gray-500"
           id="search"
           type="text"
           value={searchTerm}

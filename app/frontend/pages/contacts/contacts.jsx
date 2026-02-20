@@ -8,6 +8,8 @@ import { Loading, NotFound } from "../chats/components/Search";
 import Contact from "./components/contact";
 import Scrollable from "../../components/Containers/Scrollable";
 import { ContactBook } from "../../components/Icons/AppIcons";
+import Pod from "../../components/ui/Pod";
+import SplitWrapped from "../../components/ui/SplitWrapped";
 
 function Result({ searchTerm, loading, contacts }) {
   if (!searchTerm)
@@ -46,8 +48,8 @@ export default function Contacts() {
     fn: jsRoutes.searchPath,
   });
 
-  return (
-    <>
+  return (<>
+    <SplitWrapped>
       <Search
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -58,9 +60,12 @@ export default function Contacts() {
         loading={contactsLoading}
         contacts={contacts}
       />
-    </>
+    </SplitWrapped>
+     <Pod title="Contacts" heading="You can find your friends by username here"/>
+     </>
   );
 }
+
 
 Contacts.layout = (page) => {
   return (

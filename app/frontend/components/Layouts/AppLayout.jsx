@@ -1,19 +1,30 @@
-import React, { useState } from "react";
-import { router, usePage } from "@inertiajs/react";
-import IconButton from "../ui/IconButton";
+import { Link, router, usePage } from "@inertiajs/react";
 import Logo from "../Icons/Logo";
 import TextLogo from "../ui/TextLogo";
-import Avatar from "../ui/Avatar";
-import { Settings } from "../Icons/AppIcons";
 import ThemeToggle from "../Theme/ThemeToggle";
+import Avatar from "../ui/Avatar";
+import IconButton from "../ui/IconButton";
+import { createContext, useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import Tabs from "../Tabs";
+import useWindowDimensions from "../hooks/useWindowDimensions";
+
+export const AppContext = createContext(null)
 
 function AppLayout({ children }) {
   const { current_user } = usePage().props;
 
+  const scrollableRef = useRef(null)
+
+  const windowDimensions = useWindowDimensions()
+  const isMobile = windowDimensions.width < 1000
+  const isMessagesRoute = window.location.pathname.split("/").splice(-1) == "messages"
+
   return (
-    <div className="grow-1 px-4 flex justify-center no-doc-scroll max-h-screen">
-      <div className="w-full flex flex-col lg:w-[50%] relative">
-        <div className="panel flex py-4 item-center justify-between border-gray-200 border-b-1 dark:border-gray-700">
+    <AppContext value={{scrollableRef}}>
+    <div className="no-doc-scroll grow-1 max-h-dvh">
+      <div className="panel flex px-2 py-2 item-center justify-between border-gray-200 border-b-1 dark:border-gray-700">
           <button
             className="logo flex cursor-pointer"
             onClick={() => router.visit("/chats")}
@@ -23,25 +34,41 @@ function AppLayout({ children }) {
           </button>
 
           <div className="flex gap-4 items-center">
+            <Link href="/logout" method="delete">
+              <FontAwesomeIcon className="text-gray-700 dark:text-gray-300" icon={faArrowRightFromBracket} />
+            </Link>
             <ThemeToggle/>
-            <IconButton onClick={() => router.visit("/settings")}>
-              <Settings
-                width="1.3rem"
-                height="1.3rem"
-                className="fill-fblack dark:fill-gray-200"
-              />
-            </IconButton>
-
-            <Avatar
+            <IconButton>
+            
+              <Avatar
               avatar={current_user.avatar_image}
               alt={current_user.username + " image"}
-              className={"size-8 overflow-hidden"}
-            />
+              className="size-8 overflow-hidden"
+              />
+            </IconButton>
+            
           </div>
         </div>
-        <div className="h-[80dvh] lg:h-[85dvh]">{children}</div>
+      <div className="flex scrollable flex-col lg:flex-row relative w-full lg:h-[95dvh]">
+        
+        <div className="w-full h-full">
+          <div className="flex w-full h-full">
+            {children}
+          
+          </div>
+          {!isMessagesRoute && isMobile && <div className="px-2">
+            <Tabs/>
+          </div>}
+          
+        </div>
+       
+           {!isMobile && <Tabs/>}
+        
+       
+
       </div>
     </div>
+    </AppContext>
   );
 }
 export default AppLayout;

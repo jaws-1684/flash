@@ -55,10 +55,9 @@ function Plus(props) {
       viewBox="0 0 36 36"
       width="1.2rem"
       height="1.2rem"
-      {...props}
     >
       <path
-        className="fill-gray-200"
+        {...props}
         d="M31 15H21V5a3 3 0 10-6 0v10H5a3 3 0 100 6h10v10a3 3 0 106 0V21h10a3 3 0 100-6z"
       />
     </svg>

@@ -58,13 +58,20 @@
   }
 }
 
-@media screen and (height < 700px){
-  .message-container {
-      height: 64dvh;
-    }
+@media screen and (height < 800px){
+  .scrollable {
+      height: 80dvh;
+  }
+  .message-area {
+    height: 90dvh;
+  }
 }
-@media screen and (height < 800px) and (height > 700px){
-  .message-container {
-      height: 70dvh;
-    }
+@media screen and (height > 800px) and (height < 900px){
+  .scrollable {
+      height: 85dvh;
+  }
+  .message-area {
+    height: 90dvh;
+  }
 }
+

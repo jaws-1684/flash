@@ -8,8 +8,8 @@ function Contacts({ chats, groupChats, favorite }) {
   const saved = favorite && <ChatLink key={favorite.id} chat={favorite} name="Saved" href={jsRoutes.chatMessagesPath(favorite.id)}/>
 
   const groups = groupChats.length ? <>
-    <Header text="Groups" className="text-gray-700 ml-2"/>
-    {groupChats.map((chat) => (<ChatLink key={"group-"+chat.id} chat={chat} name={chat.name} href={jsRoutes.groupChatMessagesPath(chat.slug)}/>))}
+      <Header text="Groups" className="text-gray-700 ml-2"/>
+      {groupChats.map((chat) => (<ChatLink key={"group-"+chat.id} chat={chat} name={chat.name} href={jsRoutes.groupChatMessagesPath(chat.slug)}/>))}
   </> : null
 
   const chats_block = chats.length ? <>
@@ -19,13 +19,14 @@ function Contacts({ chats, groupChats, favorite }) {
         .map((chat) => ( <ChatLink key={"chat-"+chat.id} chat={chat} name={chat.name} href={jsRoutes.chatMessagesPath(chat.id)}/>))}
   </> : null
   return (
-    <>
-    {saved}
+    <div className="flex flex-col">
+      {saved}
 
-    {groups}      
-
-    {chats_block}
-    </>
+      {groups}
+         
+      {chats_block}
+  
+    </div>
   );
 }
 

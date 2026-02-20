@@ -2,7 +2,7 @@ import React from "react";
 
 function Scrollable({ children, className = "", ...rest }) {
   return (
-    <div className={`scrollable overflow-scroll ${className}`} {...rest}>
+    <div className={`scrollable ${className} flex flex-col justify-between`} {...rest}>
       {children}
     </div>
   );

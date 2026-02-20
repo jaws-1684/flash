@@ -8,6 +8,10 @@ import { api } from "../../lib/Api";
 import { jsRoutes } from "../../lib/paths";
 import { usePage } from "@inertiajs/react";
 import Button from "../../components/ui/Button";
+import Tabs from "../../components/Tabs";
+import { TABS } from "../../components/Tabs";
+import Pod from "../../components/ui/Pod";
+import SplitWrapped from "../../components/ui/SplitWrapped";
 
 const DEFAULT_AVATAR = "https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar-thumbnail.png"
 
@@ -55,25 +59,26 @@ function NewGroup() {
   };
  
   return (<>
-    <Title className="text-center mt-2 text-gray-700" text="Create a group" />
-    <form onSubmit={onSubmit}>
-      <ImageUploadField avatar={avatar.url} label="Group avatar" onChange={handelonchange}/>
-      <TextField
-          onChange={(e) => setGroupName(e.target.value)}
-          placeholder="Enter a group name"
-          name="group_name"
-          label="Group name"
-          value={groupName}
-          maxlength={20}
-          required
-        />
-      <div className="flex justify-end items-center">
-              <Button className="w-sm" type="submit" color="blue">
-              { processing ? "Saving" : "Save" }
-          </Button>
-      </div>        
-    </form>
-    
+    <SplitWrapped>
+      <form className="flex flex-col grow-1" onSubmit={onSubmit}>
+        <ImageUploadField avatar={avatar.url} label="Group avatar" onChange={handelonchange}/>
+        <TextField
+            onChange={(e) => setGroupName(e.target.value)}
+            placeholder="Enter a group name"
+            name="group_name"
+            label="Group name"
+            value={groupName}
+            maxlength={20}
+            required
+          />
+        <div className="flex justify-end items-center">
+                <Button className="w-sm" type="submit" color="blue">
+                { processing ? "Saving" : "Save" }
+            </Button>
+        </div>        
+      </form>
+    </SplitWrapped>
+    <Pod title="New Group" heading="Here you can create a group"/>
   </>
    
   )

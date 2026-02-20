@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, createContext } from "react";
+import React, { useEffect, useState, useRef, createContext, useContext } from "react";
 import { Link, router, usePage } from "@inertiajs/react";
 import useActionCable from "../../components/hooks/useActionCable";
 import useChannel from "../../components/hooks/useChannel";
@@ -20,28 +20,48 @@ import useOutsideClick from "../../components/hooks/useOutsideClick";
 import Dropdown from "./components/ui/Dropdown";
 import { useReducer } from "react";
 import messageReducer from "./reducers/messageReducer";
+import { AppContext } from "../../components/Layouts/AppLayout";
+import { Chats } from "../chats";
 
 export const MessageContext = createContext(null)
 
-export default function Messages({ chat, recipient, chatMessages, type }) {
+export default function Messages({ chat, recipient, chatMessages, type, chats, group_chats }) {
 
-  const [messages, dispatch] = useReducer(messageReducer, chatMessages);
+  const [messages, dispatch] = useReducer(messageReducer, chatMessages)
   const { current_user } = usePage().props
   
-  const [isShowingOptions, setIsShowingOptions] = useState(false);
-  const { actionCable } = useActionCable(baseURI.webSocket);
-  const { subscribe, unsubscribe } = useChannel(actionCable);
+  const [isShowingOptions, setIsShowingOptions] = useState(false)
+  const { actionCable } = useActionCable(baseURI.webSocket)
+  const { subscribe, unsubscribe } = useChannel(actionCable)
+
+  const  scrollableRef = useRef(null)
 
   const [ currentMessage, setCurrentMessage ] = useState({
     body: "",
+    lastMessageBody: "",
     id: null,
-    isEdited: false
+    isEditing: false
   })
+  
+  const scrollToBottom = (behavior="auto") => {
+    const element = scrollableRef.current
+    const scrollHeight = element.scrollHeight
+    element.scrollTo({
+      top: scrollHeight,
+      behavior: behavior,
+    })
+  }
+  useEffect(() => {
+    scrollToBottom()
+  }, [])
   const messageGroups = Object.entries(
     Object.groupBy(messages, ({ created_at }) => dateToWords(created_at)),
   );
-  const containerRef = useRef(null);
+
   const dropDownRef = useRef(null)
+  
+
+  
 
   const chatId = chat.id
 
@@ -77,12 +97,7 @@ export default function Messages({ chat, recipient, chatMessages, type }) {
         </Link> 
   }
 
-  useEffect(() => {
-    const element = containerRef.current;
-    if (element) {
-      element.scrollTop = element.scrollHeight;
-    }
-  }, [messages]);
+ 
 
   useEffect(() => {
     subscribe(
@@ -102,13 +117,14 @@ export default function Messages({ chat, recipient, chatMessages, type }) {
   }, [chatId]);
    
   useOutsideClick(() => setIsShowingOptions(false), dropDownRef)
+  const scrollableClassBase = "message-container w-full flex flex-col-reverse justify-start items-start gap-4 pr-4 h-full"
+  const scrollableClass = currentMessage.isEditing ? scrollableClassBase + " blur-md pointer-events-none" : scrollableClassBase
 
   let content;
   if (messages.length > 0) {
     content = (
       <Scrollable
-        ref={containerRef}
-        className="message-container w-full flex flex-col-reverse justify-start items-start gap-4 overflow-scroll h-[74dvh] lg:h-[75dvh] pr-4"
+        className={scrollableClass}
       >
         {messageGroups.map(([time, messages]) => (
           <MessageGroup key={time} time={time} messages={messages} />
@@ -117,7 +133,7 @@ export default function Messages({ chat, recipient, chatMessages, type }) {
     );
   } else {
     content = (
-      <div className="flex justify-center items-center h-[74dvh] lg:h-[75dvh]">
+      <div className="message-container flex justify-center items-center h-full">
         No messages start by sending some
       </div>
     );
@@ -131,32 +147,41 @@ export default function Messages({ chat, recipient, chatMessages, type }) {
   return (
     <>
       <MessageContext value={{ currentMessage, setCurrentMessage, type }}>
-      <div className="h-20 p-2 flex justify-between items-center relative">
-        <div className="flex gap-4 items-center justify-start">
-          <IconButton
-            className="cursor-pointer"
-            onClick={() => router.visit("/")}
-          >
-            <FontAwesomeIcon
-              className="hover:fill-red-200"
-              icon={faAngleLeft}
-            />
-          </IconButton>
-
-          <Avatar
-            className="size-12"
-            avatar={recipient?.avatar_image || chat?.avatar_image}
-            alt="chat avatar"
-          />
-          <Name name={name} />
+        <div className="hidden h-full lg:block w-1/2">
+          <Chats chats={chats} group_chats={group_chats}/>
         </div>
-        <IconButton onClick={() => setIsShowingOptions(!isShowingOptions)}>
-          <Options width="1rem" height="1rem" className="dark:fill-white" />
-        </IconButton>
-        {isShowingOptions && dropDown}
+        <div ref={scrollableRef} className="message-area flex flex-col gap-4 relative h-full overflow-scroll scrollable overflow-x-hidden w-full lg:w-3/4">
+          <div className="sticky z-50 top-0 h-20 p-2 flex justify-between items-center relative bg-white dark:bg-fgray">
+            <div className="flex gap-4 items-center justify-start">
+              <IconButton
+                className="cursor-pointer"
+                onClick={() => router.visit("/")}
+              >
+                <FontAwesomeIcon
+                  className="hover:fill-red-200"
+                  icon={faAngleLeft}
+                />
+              </IconButton>
+
+              <Avatar
+                className="size-12"
+                avatar={recipient?.avatar_image || chat?.avatar_image}
+                alt="chat avatar"
+              />
+              <Name name={name} />
+            </div>
+            <IconButton onClick={() => setIsShowingOptions(!isShowingOptions)}>
+              <Options width="1rem" height="1rem" className="dark:fill-white" />
+            </IconButton>
+            {isShowingOptions && dropDown}
+         </div>
+
+          <div className="grow-1 p-2">
+            {content}
+          </div>
+         
+        < MessageInput chatId={chatId} />
       </div>
-          {content}
-      <MessageInput chatId={chatId} />
       </MessageContext>
     </>
   );

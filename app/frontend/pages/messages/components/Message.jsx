@@ -20,15 +20,7 @@ const messageVariants = {
     "bg-gray-400 dark:bg-gray-700 shadow-lg shadow-gray-400/50 dark:shadow-gray-700/50",
 };
 
-const MessageActionDropdown = ({isShowingDropdown, setIsShowingDropdown, message, onEdit}) => {
-  const { authenticity } = usePage().props
-
-  const onDelete = () => {
-    api.delete({
-      path: jsRoutes.messagePath(message.id),
-      authenticityToken: authenticity.csrf_token,
-    })
-  }
+const MessageActionDropdown = ({isShowingDropdown, setIsShowingDropdown, message, onEdit, onDelete}) => {
  
   return (<>
   <div className="dropdown self-end absolute flex flex-col items-start justify-start">
@@ -41,7 +33,7 @@ const MessageActionDropdown = ({isShowingDropdown, setIsShowingDropdown, message
           </IconButton>     
   </div>
        <Activity className="relative" mode={isShowingDropdown ? "visible" : "hidden"}>
-          <Dropdown classes="absolute z-50 right-20 lg:right-100 bg-red-200" title={truncate(message.body, 20)}>
+          <Dropdown classes="absolute z-50 bottom-8 right-0" title={truncate(message.body, 20)}>
 
             <div className="flex flex-col">
                 <IconButton onClick={onDelete}
@@ -64,6 +56,7 @@ const MessageActionDropdown = ({isShowingDropdown, setIsShowingDropdown, message
 }
 export function Message({ message }) {
   const { current_user } = usePage().props;
+   const { authenticity } = usePage().props
 
   if (message.soft_deleted) {
     const position = current_user.id == message.user_id ? "self-end" : ""
@@ -74,6 +67,8 @@ export function Message({ message }) {
   const [ isHovered, setIsHoverd ] = useState(false)
   const [ isShowingDropdown, setIsShowingDropdown ] = useState(false)
   const dropDownRef = useRef(null)
+
+  
 
   useOutsideClick(() => {
     setIsShowingDropdown(false)
@@ -88,6 +83,15 @@ export function Message({ message }) {
 
   const onEdit = () => {
     setIsEditing(message.id, message.body)
+    setIsShowingDropdown(false)
+  }
+  const onDelete = () => {
+    api.delete({
+      path: jsRoutes.messagePath(message.id),
+      authenticityToken: authenticity.csrf_token,
+    }).then(() => {
+      setIsShowingDropdown(false)
+    })
   }
   const creator = current_user.id == message.user_id
 
@@ -104,7 +108,8 @@ export function Message({ message }) {
                        message={message}
                        isShowingDropdown={isShowingDropdown}
                        setIsShowingDropdown={setIsShowingDropdown}
-                       onEdit={onEdit} 
+                       onEdit={onEdit}
+                       onDelete={onDelete} 
                       /> }
 
       {body && <p>{body}</p>}

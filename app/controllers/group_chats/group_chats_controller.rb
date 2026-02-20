@@ -6,7 +6,9 @@ class GroupChats::GroupChatsController < ApplicationController
         render inertia: "messages/index", props: {
           chat: @messageable,
           chatMessages:  @messageable.messages,
-          type: :group
+          type: :group,
+          chats: current_user.chat_names, 
+          group_chats: current_user.group_chats
         }
       # render :json => order_by_creation_time(@messageable.messages)
       else

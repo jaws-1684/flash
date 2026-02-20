@@ -6,14 +6,11 @@ import Contacts from "./components/Contacts";
 import Welcome from "../../components/ui/Welcome";
 import Search, { NotFound } from "./components/Search";
 import Scrollable from "../../components/Containers/Scrollable";
-import Plus from "../../components/Icons/AppIcons";
-import IconButton from "../../components/ui/IconButton";
-import { router } from "@inertiajs/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import Pod from "../../components/ui/Pod";
+import SplitWrapped from "../../components/ui/SplitWrapped";
 
-export default function Chats({ chats, group_chats }) {
-  const { current_user } = usePage().props;
+export const Chats = ({chats, group_chats }) => {
+   const { current_user } = usePage().props;
   const [chatContacts, setChatContacts] = useState(chats);
   const [groupChats, setGroupChats] = useState(group_chats);
 
@@ -22,7 +19,6 @@ export default function Chats({ chats, group_chats }) {
     term: "",
   });
 
-  console.log(chats)
 
   const filteredContacts = chatContacts.filter(
     (chat) =>
@@ -49,40 +45,34 @@ export default function Chats({ chats, group_chats }) {
   const groups = searching.term ? filteredGroups : groupChats;
 
   return (
-    <>
-      <Search
-        searchTerm={searching.term}
-        setSearchTerm={(searchTerm) =>
-          setSearching({ status: true, term: searchTerm })
-        }
-        placeholder="Search Conversations"
-      />
-      <Scrollable className="h-full">
-        {filterResult}
-        <Contacts favorite={favorite} groupChats={groups} chats={contacts} />
-        {welcome}
-      </Scrollable>
-
-      <div className="relative w-full z-50 flex">
-         <IconButton
-          className="absolute cursor-pointer bottom-4 size-12 end-15 z-50 p-2 bg-logo rounded-full transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500"
-          onClick={() => router.visit("/contacts")}
-        >
-          <FontAwesomeIcon className="text-white" icon={faUserGroup} />
-        </IconButton>
-
-        <IconButton
-          className="absolute cursor-pointer size-12 inline-flex items-center justify-center bottom-4 end-2 z-50 p-3 bg-logo rounded-full transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500"
-          onClick={() => router.visit("/new_group")}
-        >
-          <Plus className="size-xs" />
-        </IconButton>
+      <div className="w-full h-full lg:pr-2 px-4 overflow-scroll scrollable overflow-x-hidden">
+        <Search
+          searchTerm={searching.term}
+          setSearchTerm={(searchTerm) =>
+            setSearching({ status: true, term: searchTerm })
+          }
+          placeholder="Search Conversations"
+        />
+        <Scrollable>
+          {filterResult}
+          <Contacts favorite={favorite} groupChats={groups} chats={contacts} />
+          {welcome}
+        </Scrollable>
       </div>
-    </>
   );
 }
+export default function index({chats, group_chats }) {
+  return (<>
+    <SplitWrapped>
+       <Chats chats={chats} group_chats={group_chats}/>
+    </SplitWrapped>
+  
+   <Pod title="Flash" heading="Connect with your friends"/>
+  </>)
+}
 
-Chats.layout = (page) => {
+
+index.layout = (page) => {
   return (
     <Layout title="Chats">
       <AppLayout children={page} />

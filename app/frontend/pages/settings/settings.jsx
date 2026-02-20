@@ -11,7 +11,10 @@ import TextField from "../../components/Forms/Fields/TextField";
 import PasswordField from "../../components/Forms/Fields/PasswordField";
 import { jsRoutes } from "../../lib/paths";
 import ImageUploadField from "../../components/Forms/Fields/ImageUploadField";
-         
+import Pod from "../../components/ui/Pod";
+import SplitWrapped from "../../components/ui/SplitWrapped";
+
+
 function Settings() {
  const { authenticity, current_user } = usePage().props
 
@@ -75,9 +78,8 @@ function Settings() {
        setProccesing(false)
     });
   };
-  return (
-    <>
-      <Title className="text-center mt-2 text-gray-700" text="Settings" />
+  return (<>
+    <SplitWrapped>
 
       <form onSubmit={onSubmit}>
         <ImageUploadField avatar={current_user.avatar_image} label="Avatar" ref={avatarRef}/>
@@ -123,9 +125,11 @@ function Settings() {
             { processing ? "Saving" : "Save" }
         </Button>
         </div>
-        
+       
       </form>
 
+    </SplitWrapped>
+    <Pod title="Settings" heading="You can update your profile here"/>
     </>
   )
 }
