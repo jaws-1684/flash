@@ -17,7 +17,9 @@ const railsRoutes = {
   chatGroups: "/group_chats",
   message: "/messages/:id",
   userUpdate: "/registrations",
-  groupChatMessages: "/group_chats/:id/messages"
+  groupChatMessages: "/group_chats/:id/messages",
+  searchGroups: "api/search_groups?name=:id",
+  joinGroup: "/group_chats/:id/join"
 };
 
 const jsRoutes = {};

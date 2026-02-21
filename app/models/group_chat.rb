@@ -28,20 +28,9 @@ class GroupChat < ApplicationRecord
 
   before_validation :generate_slug
 
-  # def create_and_join current_user, group_chat_params
-  #   GroupChat.transaction do
-  #     UserGroupChats.transaction do
-  #       user_group_chats.create!(user: current_user)
-
-  #       group_chat = GroupChat.build(group_chat_params) 
-  #       group_chat.user = current_user
-  #       group_chat.save!
-  #     end
-  #   end
-  # end
 
   def as_json(options = {})
-      super( {methods: [:avatar_image, :last_message] }.merge(options))
+      super( {methods: [:avatar_image, :last_message], include: :participants }.merge(options))
   end
 
   private

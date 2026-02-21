@@ -1,12 +1,22 @@
 class GroupChatsController < ApplicationController
 	def search
-    groups = GrupChat.search(params[:name]).with_pg_search_highlight
+    groups = GroupChat.search(params[:name]).with_pg_search_highlight
 
     if groups.length > 0
       render json: groups
     else
       render json: { error: "not found" }, status: :unprocessable_entity
     end
+  end
+  def join
+  	@user_group_chat = current_user.user_group_chats.build(group_chat_id: params[:id])
+
+  	if @user_group_chat.save
+			render json: { message: "Succesfuly joined group" }, status: :ok
+		else
+			render json: @user_group_chat.errors, status: :unprocessable_entity
+		end
+
   end
 
 	def create

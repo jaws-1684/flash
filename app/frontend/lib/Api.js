@@ -20,8 +20,9 @@ class Api {
       .then((response) => {
         if (response.ok) {
           return response.json() ?? [];
+        } else {
+          throw new Error("Can't find any");
         }
-        throw new Error("Network response was not ok.");
       })
       .then((data) => {
         this.cache.set(key, data);

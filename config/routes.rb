@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   resources :group_chats, only: %i[create destroy]
   resources :chats, only: %i[index create destroy]
   resources :messages, only: [:destroy, :update]
-
+  post "group_chats/:id/join", to: "group_chats#join"
   root "chats#index"
   # Redirect to localhost from 127.0.0.1 to use same IP address with Vite server
   constraints(host: "127.0.0.1") do

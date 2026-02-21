@@ -2,10 +2,10 @@ const classVariants = {
   base: "hover:bg-gray-100 dark:hover:bg-gray-100/10 hover:rounded-md",
   active: "bg-gray-100 dark:bg-gray-100/10 rounded-md",
 };
-export const Action = ({ onClick, children, variant = "base" }) => {
+export const Action = ({ onClick, children, variant = "base", className="flex-col"}) => {
   return (
     <div
-      className={`flex p-1 flex-col items cursor-pointer ${classVariants[variant]}`}
+      className={`flex p-1 items cursor-pointer ${classVariants[variant]} ${className}`}
       onClick={onClick}
     >
       <div className="flex w-full">

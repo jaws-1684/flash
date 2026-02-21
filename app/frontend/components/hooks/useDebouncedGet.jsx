@@ -4,6 +4,7 @@ import { api } from "../../lib/Api";
 
 export function useDebouncedGet({ key, query, fn, debounceMs = 100 }) {
   const [data, setData] = useState([]);
+  const [ errors, setErrors ] = useState("")
   const [loading, setLoading] = useState(false);
   const path = fn(query);
 
@@ -24,11 +25,15 @@ export function useDebouncedGet({ key, query, fn, debounceMs = 100 }) {
 
         loadTimeoutRef.current = setTimeout(() => {
           setData(result ?? []);
+          setErrors("")
           setLoading(false);
         }, remainingTime);
       } catch (e) {
-        if (api.isAborted(path)) return;
-        setData([]);
+         if (api.isAborted(path)) return;
+          setErrors(e)
+          
+          setData([])
+          setLoading(false);
       }
     }, debounceMs);
 
@@ -39,5 +44,5 @@ export function useDebouncedGet({ key, query, fn, debounceMs = 100 }) {
     };
   }, [query, debounceMs]);
 
-  return [data, loading, setData];
+  return [data, loading, errors, setData];
 }

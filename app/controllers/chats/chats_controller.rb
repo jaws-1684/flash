@@ -6,7 +6,7 @@ class Chats::ChatsController < ApplicationController
         render inertia: "messages/index", props: {
           chat: @messageable,
           chats: current_user.chat_names, 
-          group_chats: current_user.group_chats,
+          group_chats: current_user.chat_groups,
           recipient: current_user.chat_recipient(@messageable),
           chatMessages:  @messageable.messages,
           type: :private
