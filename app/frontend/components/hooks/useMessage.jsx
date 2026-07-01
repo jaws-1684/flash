@@ -2,7 +2,7 @@ import { useContext } from "react"
 import { MessageContext } from "../../pages/messages"
 
 function useMessage() {
-    const { currentMessage, setCurrentMessage, type } = useContext(MessageContext)
+    const { currentMessage, setCurrentMessage, type, scrollToBottom } = useContext(MessageContext)
 
     const isEditing = currentMessage.isEditing
     const id = currentMessage.id
@@ -18,7 +18,7 @@ function useMessage() {
     })
     const setBody = (body) => setCurrentMessage({...currentMessage, body: body})
 
-    return { currentMessage, setCurrentMessage, isEditing, id, body, setBody, setIsEditing, clear, type, lastMessageBody }
+    return { currentMessage, setCurrentMessage, isEditing, id, body, setBody, setIsEditing, clear, type, lastMessageBody, scrollToBottom }
 }
 
 export default useMessage

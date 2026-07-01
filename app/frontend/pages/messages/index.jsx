@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, createContext, useContext } from "react";
-import { Link, router, usePage } from "@inertiajs/react";
+import { InfiniteScroll, Link, router, usePage } from "@inertiajs/react";
 import useActionCable from "../../components/hooks/useActionCable";
 import useChannel from "../../components/hooks/useChannel";
 import { baseURI, jsRoutes } from "../../lib/paths";
@@ -20,14 +20,13 @@ import useOutsideClick from "../../components/hooks/useOutsideClick";
 import Dropdown from "./components/ui/Dropdown";
 import { useReducer } from "react";
 import messageReducer from "./reducers/messageReducer";
-import { AppContext } from "../../components/Layouts/AppLayout";
 import { Chats } from "../chats";
 
 export const MessageContext = createContext(null)
 
-export default function Messages({ chat, recipient, chatMessages, type, chats, group_chats }) {
+export default function Messages({ chat, chat_messages, type, chats, group_chats }) {
 
-  const [messages, dispatch] = useReducer(messageReducer, chatMessages)
+  const [ messages, dispatch ] = useReducer(messageReducer, chat_messages)
   const { current_user } = usePage().props
   
   const [isShowingOptions, setIsShowingOptions] = useState(false)
@@ -45,11 +44,14 @@ export default function Messages({ chat, recipient, chatMessages, type, chats, g
   
   const scrollToBottom = (behavior="auto") => {
     const element = scrollableRef.current
-    const scrollHeight = element.scrollHeight
-    element.scrollTo({
+    if (element) {
+      const scrollHeight = element.scrollHeight
+      element.scrollTo({
       top: scrollHeight,
       behavior: behavior,
     })
+    }
+    
   }
   useEffect(() => {
     scrollToBottom()
@@ -66,6 +68,7 @@ export default function Messages({ chat, recipient, chatMessages, type, chats, g
   const chatId = chat.id
 
   let name
+  let recipient  
   let channel
   let destroyLink
 
@@ -84,9 +87,10 @@ export default function Messages({ chat, recipient, chatMessages, type, chats, g
         </Link> 
       break
     default:
+      recipient = chat.recipient
       name = recipient.username
       channel = "ChatChannel"
-      destroyLink = <Link
+      destroyLink = recipient.id != current_user.id && <Link
           className="p-2 inline-flex items-center  gap-2 p-2 cursor-pointer w-full hover:bg-gray-200/50 hover:rounded-md"
           href={jsRoutes.destroyChatPath(chatId) }
           method="delete"
@@ -117,18 +121,21 @@ export default function Messages({ chat, recipient, chatMessages, type, chats, g
   }, [chatId]);
    
   useOutsideClick(() => setIsShowingOptions(false), dropDownRef)
-  const scrollableClassBase = "message-container w-full flex flex-col-reverse justify-start items-start gap-4 pr-4 h-full"
+  const scrollableClassBase = "scrollable message-container w-full flex flex-col-reverse justify-start items-start gap-4 p-4 lg:p-8 overflow-scroll overflow-x-hidden"
   const scrollableClass = currentMessage.isEditing ? scrollableClassBase + " blur-md pointer-events-none" : scrollableClassBase
 
   let content;
   if (messages.length > 0) {
     content = (
       <Scrollable
+        ref={scrollableRef}
         className={scrollableClass}
       >
+      
         {messageGroups.map(([time, messages]) => (
           <MessageGroup key={time} time={time} messages={messages} />
         ))}
+  
       </Scrollable>
     );
   } else {
@@ -146,11 +153,11 @@ export default function Messages({ chat, recipient, chatMessages, type, chats, g
 
   return (
     <>
-      <MessageContext value={{ currentMessage, setCurrentMessage, type }}>
-        <div className="hidden h-full lg:block w-1/2">
+      <MessageContext value={{ currentMessage, setCurrentMessage, type, scrollToBottom }}>
+        <div className="hidden lg:block w-1/2 p-4 border-r border-gray-200 dark:border-gray-700">
           <Chats chats={chats} group_chats={group_chats}/>
         </div>
-        <div ref={scrollableRef} className="message-area flex flex-col gap-4 relative h-full overflow-scroll scrollable overflow-x-hidden w-full lg:w-3/4">
+        <div className="message-area flex flex-col gap-4 relative w-full lg:w-3/4">
           <div className="sticky z-50 top-0 h-20 p-2 flex justify-between items-center relative bg-white dark:bg-fgray">
             <div className="flex gap-4 items-center justify-start">
               <IconButton
@@ -165,7 +172,7 @@ export default function Messages({ chat, recipient, chatMessages, type, chats, g
 
               <Avatar
                 className="size-12"
-                avatar={recipient?.avatar_image || chat?.avatar_image}
+                avatar={chat?.recipient?.avatar_image || chat?.avatar_image}
                 alt="chat avatar"
               />
               <Name name={name} />
@@ -176,11 +183,9 @@ export default function Messages({ chat, recipient, chatMessages, type, chats, g
             {isShowingOptions && dropDown}
          </div>
 
-          <div className="grow-1 p-2">
-            {content}
-          </div>
          
-        < MessageInput chatId={chatId} />
+            {content}
+            <MessageInput chatId={chatId} />
       </div>
       </MessageContext>
     </>

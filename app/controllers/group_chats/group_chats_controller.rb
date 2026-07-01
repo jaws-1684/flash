@@ -5,10 +5,10 @@ class GroupChats::GroupChatsController < ApplicationController
       if @messageable
         render inertia: "messages/index", props: {
           chat: @messageable,
-          chatMessages:  @messageable.messages,
-          type: :group,
-          chats: current_user.chat_names, 
-          group_chats: current_user.chat_groups
+          chats: current_user.chats.includes(:messages),
+          group_chats: current_user.group_chats.includes(:messages),
+          chat_messages:  @messageable.messages,
+          type: :group
         }
       # render :json => order_by_creation_time(@messageable.messages)
       else
@@ -17,7 +17,7 @@ class GroupChats::GroupChatsController < ApplicationController
     end
   private
     def set_messageable
-        @chat_groups = current_user.chat_groups
-        @messageable = @chat_groups.find_by_slug(params[:group_chat_id]) || @chat_groups.find(params[:group_chat_id])
+        @group_chats = current_user.group_chats
+        @messageable = @group_chats.find_by_slug(params[:group_chat_id]) || @group_chats.find(params[:group_chat_id])
     end
 end

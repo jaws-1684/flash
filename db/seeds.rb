@@ -8,7 +8,13 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-100.times do
+User.create!(
+    email: 'admin@flash.com',
+    password: '12345678',
+    username: Faker::Internet.unique.username
+)
+
+50.times do
   User.create!(
     email: Faker::Internet.unique.email,
     password: Faker::Internet.password(min_length: 6),

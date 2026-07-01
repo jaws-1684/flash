@@ -6,6 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Flash">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="turbo-prefetch" content="false">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -27,6 +28,7 @@
     <%= vite_javascript_tag "inertia.jsx" %>
     <%= inertia_ssr_head %>
     <%= vite_javascript_tag 'application' %>
+    
     <!--
       If using a TypeScript entrypoint file:
         vite_typescript_tag 'application'

@@ -16,7 +16,7 @@ const classVariants = {
 }
 
 const tabsVariants = {
-    base: "sticky flex bottom-2 rounded-full ring ring-gray-200/50 dark:ring-gray-700/50 w-full justify-around items-center z-50 flex items-center p-2 gap-2 dark:bg-gray-500/95",
+    base: "sticky flex bottom-2 w-full justify-around items-center z-50 flex items-center p-2 gap-2 dark:bg-gray-500/95",
     lg: "lg:dark:bg-fgray lg:order-first lg:justify-start lg:rounded-xs lg:h-full lg:w-[70px] lg:flex-col lg:p-1 lg:gap-8",
 
 }

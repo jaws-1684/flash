@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { usePage } from "@inertiajs/react";
 import AppLayout from "../../components/Layouts/AppLayout";
 import Layout from "../../components/Layouts/Layout";
@@ -9,8 +9,11 @@ import Scrollable from "../../components/Containers/Scrollable";
 import Pod from "../../components/ui/Pod";
 import SplitWrapped from "../../components/ui/SplitWrapped";
 
+const filterData = (data, condition) => {
+  return data.toLowerCase().indexOf(condition.toLocaleLowerCase())  !== -1
+}
 export const Chats = ({chats, group_chats }) => {
-   const { current_user } = usePage().props;
+  const { current_user } = usePage().props;
   const [chatContacts, setChatContacts] = useState(chats);
   const [groupChats, setGroupChats] = useState(group_chats);
 
@@ -19,33 +22,28 @@ export const Chats = ({chats, group_chats }) => {
     term: "",
   });
 
-
   const filteredContacts = chatContacts.filter(
-    (chat) =>
-      chat.name.toLowerCase().indexOf(searching.term.toLocaleLowerCase()) !==
-      -1,
+    (chat) => filterData(chat?.recipient?.username, searching.term)
   );
   const filteredGroups = groupChats.filter(
-    (chat) =>
-      chat.name.toLowerCase().indexOf(searching.term.toLocaleLowerCase()) !==
-      -1,
+    (chat) => filterData(chat.name, searching.term)
   );
 
   const favorite =
     !searching.term &&
-    chatContacts.filter((chat) => chat.name == current_user.username)[0];
+    chatContacts.find((chat) => chat?.recipient?.id == current_user.id);
 
   const filterResult = searching.term && !filteredContacts.length && !filteredGroups.length&& (
     <NotFound />
   );
-  const welcome = chats.length < 2 && !searching.term && (
+  const welcome = chats.length == 1 && !searching.term && (
     <Welcome currentUser={current_user} />
   );
-  const contacts = searching.term ? filteredContacts : chatContacts;
+  const contacts = searching.term ? filteredContacts : chatContacts.filter(chat => chat?.recipient?.id != current_user.id);
   const groups = searching.term ? filteredGroups : groupChats;
 
   return (
-      <div className="w-full h-full lg:pr-2 px-4 overflow-scroll scrollable overflow-x-hidden">
+      <div className="w-full h-full lg:pr-2 lg:px-4 overflow-scroll scrollable overflow-x-hidden lg:pb-12">
         <Search
           searchTerm={searching.term}
           setSearchTerm={(searchTerm) =>
@@ -56,7 +54,9 @@ export const Chats = ({chats, group_chats }) => {
         <Scrollable>
           {filterResult}
           <Contacts favorite={favorite} groupChats={groups} chats={contacts} />
-          {welcome}
+          <div>
+              {welcome}
+          </div>
         </Scrollable>
       </div>
   );

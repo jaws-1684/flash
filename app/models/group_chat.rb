@@ -2,8 +2,8 @@ class GroupChat < ApplicationRecord
   include PgSearch::Model
   DEFAULT_IMAGE = "https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar-thumbnail.png"
 
-  belongs_to :admin, class_name: "User", foreign_key: "user_id", optional: true 
-  has_many :user_group_chats
+  belongs_to :admin, class_name: "User", foreign_key: "user_id"
+  has_many :user_group_chats, dependent: :destroy
   has_many :participants, through: :user_group_chats, source: :user
 
   has_many :messages, -> { order "created_at DESC" }, as: :messageable, dependent: :destroy

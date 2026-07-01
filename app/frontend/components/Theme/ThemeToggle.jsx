@@ -1,18 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { Dark, Light } from "../Icons/ThemeIcons.jsx";
 import { ThemeContext } from "./ThemeContext.jsx";
 import IconButton from "../ui/IconButton.jsx";
 
 function ThemeToggle() {
-  const { theme, setTheme } = useContext(ThemeContext);
+  const { theme, setTheme: setThemeCtx } = useContext(ThemeContext);
 
-  useEffect(() => {
-    const refreshTheme = () => {
-      localStorage.setItem("theme", theme);
-    };
-
-    refreshTheme();
-  }, [theme]);
+  const setTheme = (theme) =>  {
+    localStorage.setItem("theme", theme);
+    setThemeCtx(theme)
+  }
   return (
     <>
       {theme == "light" && (

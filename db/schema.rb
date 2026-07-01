@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_17_130807) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_21_184707) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -45,11 +45,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_130807) do
 
   create_table "chats", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "creator_id"
-    t.string "recipient_id"
     t.datetime "updated_at", null: false
-    t.index ["creator_id", "recipient_id"], name: "index_chats_on_creator_id_and_recipient_id", unique: true
-    t.index ["recipient_id", "creator_id"], name: "index_chats_on_recipient_id_and_creator_id", unique: true
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_chats_on_user_id"
   end
 
   create_table "group_chats", force: :cascade do |t|
@@ -93,12 +91,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_130807) do
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
   end
 
+  create_table "user_chats", force: :cascade do |t|
+    t.bigint "chat_id", null: false
+    t.datetime "created_at", null: false
+    t.string "recipient_id"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["chat_id"], name: "index_user_chats_on_chat_id"
+    t.index ["user_id", "chat_id"], name: "index_user_chats_on_user_id_and_chat_id", unique: true
+    t.index ["user_id"], name: "index_user_chats_on_user_id"
+  end
+
   create_table "user_group_chats", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "group_chat_id", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["group_chat_id"], name: "index_user_group_chats_on_group_chat_id"
+    t.index ["user_id", "group_chat_id"], name: "index_user_group_chats_on_user_id_and_group_chat_id", unique: true
     t.index ["user_id"], name: "index_user_group_chats_on_user_id"
   end
 
@@ -128,8 +138,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_130807) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "chats", "users"
   add_foreign_key "group_chats", "users"
   add_foreign_key "messages", "users"
+  add_foreign_key "user_chats", "chats"
+  add_foreign_key "user_chats", "users"
   add_foreign_key "user_group_chats", "group_chats"
   add_foreign_key "user_group_chats", "users"
   add_foreign_key "user_providers", "users"

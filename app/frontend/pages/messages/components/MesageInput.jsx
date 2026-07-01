@@ -36,7 +36,7 @@ const formatedMessageFormObject = (files, body) => {
 };
 
 export default function MessageInput({ chatId }) {
-  const { body, setBody, id, isEditing, clear, type, lastMessageBody } = useMessage()
+  const { body, setBody, id, isEditing, clear, type, lastMessageBody, scrollToBottom } = useMessage()
   const [files, setFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -70,6 +70,7 @@ export default function MessageInput({ chatId }) {
         formData: true,
       })
       .then(() => {
+        scrollToBottom()
         setIsLoading(false);
         setFiles([]);
         clear();
@@ -115,7 +116,7 @@ export default function MessageInput({ chatId }) {
     </p>)
 
   return (
-    <div className="sticky bottom-0 flex gap-2 relative lg:dark:bg-gray-700 lg:bg-gray-200  p-2 lg:p-4">
+    <div className="sticky bottom-0 flex gap-2 relative p-2 lg:p-4">
       {isLoading && loader}
      
       <Form className="w-full" onSubmit={isEditing ? onEditSubmit : onSubmit}>

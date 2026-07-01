@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
-
+  before_action :set_current_user_on_chat
 
   include Auth
   include Inertiable
@@ -20,5 +20,8 @@ class ApplicationController < ActionController::Base
         "GroupChat" => -> { ChatGroupChannel.broadcast_to(messageable, message) } 
       }
       channels[type].call
+    end
+    def set_current_user_on_chat
+      Chat.Current = current_user.try(:id)
     end
 end

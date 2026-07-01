@@ -29,14 +29,14 @@ export default function Layout({ title = "Flash", children }) {
     if (!alert) return;
     setToast((toast) => ({ ...toast, alert: true }));
   }, [alert]);
-
+  console.log(theme)
   return (
     <>
       <ThemeContext value={themeValue}>
         <Head>
           <title>{title}</title>
         </Head>
-        <div className={theme}>
+        <div className={theme !== undefined ? theme : "light"}>
           <div className="flex min-h-screen max-w-screen bg-white dark:text-gray-200 dark:bg-fgray">
             <div className="notice z-50 absolute top-20 right-10  w-fit">
               {notice && toast.notice && (
@@ -67,10 +67,8 @@ export default function Layout({ title = "Flash", children }) {
 
 const getTheme = () => {
   const theme = localStorage.getItem("theme");
-  if (!theme) {
-    localStorage.setItem("theme", "light");
-    return "dark";
-  } else {
-    return theme;
+  if (theme === undefined) {
+    return "light"
   }
+  return theme
 };

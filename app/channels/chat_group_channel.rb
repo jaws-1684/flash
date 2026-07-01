@@ -1,6 +1,6 @@
 class ChatGroupChannel < ApplicationCable::Channel
  def subscribed
-    chat = current_user.chat_groups.find(params[:id])
+    chat = current_user.group_chats.find(params[:id])
     stream_for chat
   end
   def unsubscribed

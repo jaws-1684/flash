@@ -6,7 +6,7 @@ import { Link } from '@inertiajs/react'
 import Avatar from './ui/Avatar'
 import { truncate } from '../lib/truncate'
 
-function ChatLink({chat, href, name}) {
+function ChatLink({chat, href, name, avatar}) {
   const last_message = chat?.last_message?.body
   const created_at = chat?.last_message?.created_at
 
@@ -15,7 +15,7 @@ function ChatLink({chat, href, name}) {
           <Action>
             <Avatar
               className="size-12"
-              avatar={chat.avatar_image}
+              avatar={avatar}
               alt="chat avatar"
             />
 

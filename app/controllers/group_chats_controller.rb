@@ -20,7 +20,7 @@ class GroupChatsController < ApplicationController
   end
 
 	def create
-		@chat = current_user.group_chats.build(group_chat_params)
+		@chat = current_user.administered_group_chats.build(group_chat_params)
 
 		if @chat.save
 			@user_chat = @chat.user_group_chats.create!(user: current_user)
@@ -30,11 +30,9 @@ class GroupChatsController < ApplicationController
 		end
 	end
 	def destroy
-		@chat = current_user.group_chats.find(params[:id])
-		@admin = @chat&.admin
- 		
- 		if current_user == @admin
- 			@chat.destroy
+		@chat = current_user.administered_group_chats.find(params[:id])
+	
+ 		if @chat.destroy
 			redirect_to root_path, alert: "Group deleted"
 		else
 			redirect_to group_chat_path(@chat), alert: "Something went wrong"
@@ -43,6 +41,6 @@ class GroupChatsController < ApplicationController
 
   private
     def group_chat_params
-      params.expect(group_chat: [ :name, :avatar ])
+      params.expect(group_chat: [ :name, :image ])
     end
 end

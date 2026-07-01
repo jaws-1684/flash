@@ -85,3 +85,5 @@ gem "dotenv", "~> 3.2"
 gem "cloudinary", "~> 2.4"
 
 gem "active_storage_validations", "~> 3.0"
+
+gem "pagy", "~> 43.3"
