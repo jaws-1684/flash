@@ -46,7 +46,16 @@ RUN bundle install && \
 
 # Copy application code
 COPY . .
+COPY package*.json ./
 
+# installing stuff in hopes it will resolve the vite related stuff
+RUN apt-get update -qq && apt-get install -y build-essential libpq-dev curl
+# Install Node.js and npm
+RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash - \
+    && apt-get install -y nodejs
+
+
+RUN npm install
 # Precompile bootsnap code for faster boot times.
 # -j 1 disable parallel compilation to avoid a QEMU bug: https://github.com/rails/bootsnap/issues/495
 RUN bundle exec bootsnap precompile -j 1 app/ lib/
