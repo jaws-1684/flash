@@ -1,4 +1,4 @@
-import React, { createContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useState, useMemo } from "react";
 import { usePage } from "@inertiajs/react";
 import Success from "../Alerts/Success";
@@ -29,7 +29,6 @@ export default function Layout({ title = "Flash", children }) {
     if (!alert) return;
     setToast((toast) => ({ ...toast, alert: true }));
   }, [alert]);
-  console.log(theme)
   return (
     <>
       <ThemeContext value={themeValue}>
@@ -67,7 +66,7 @@ export default function Layout({ title = "Flash", children }) {
 
 const getTheme = () => {
   const theme = localStorage.getItem("theme");
-  if (theme === undefined) {
+  if (!theme) {
     return "light"
   }
   return theme
