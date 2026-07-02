@@ -88,12 +88,14 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
+
 production:
   primary: &primary_production
     <<: *default
     database: flash_production
-    username: flash
-    password: <%= ENV["FLASH_DATABASE_PASSWORD"] %>
+    username: <%= ENV["POSTGRES_USER"] %>
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
+    host: <%= ENV["DB_HOST"] %>
   cache:
     <<: *primary_production
     database: flash_production_cache

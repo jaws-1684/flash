@@ -85,6 +85,11 @@ function Login() {
       </div>
 
       <Oauth />
+      <div className="w-full flex flex-col text-center bg-red-200/40 text-red-800 border rounded-lg">
+        <p className="text-lg">Demo credentials</p>
+        <p>login: demo@flash.com</p>
+        <p>password: 12345678</p>
+      </div>
     </Auth>
   );
 }
