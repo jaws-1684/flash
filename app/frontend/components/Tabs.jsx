@@ -9,14 +9,14 @@ import Avatar from './ui/Avatar'
 
 
 const classVariants = {
-    base: "cursor-pointer grow-1 text-xs lg:text-sm dark:text-gray-200 text-gray-700 flex gap-1 flex-col lg:w-full lg:flex-col-reversse  items-center justify-between  lg:justify-center hover:rounded-full  lg:hover:rounded-lg dark:hover:bg-gray-700/50 hover:bg-gray-200/50 rounded-full lg:rounded-lg lg:p-1 p-2 lg:order-last ",
+    base: "cursor-pointer grow-1 text-xs lg:text-sm dark:text-gray-200 text-gray-700 flex gap-1 flex-col lg:w-full lg:flex-col-reverse  items-center justify-between  lg:justify-center hover:rounded-full  lg:hover:rounded-lg dark:hover:bg-gray-700/50 hover:bg-gray-200/50 rounded-full lg:rounded-lg lg:p-1 p-2 lg:order-last ",
     svg: "dark:fill-gray-200 fill-gray-700",
     active: "bg-gray-200 dark:bg-gray-700",
    
 }
 
 const tabsVariants = {
-    base: "sticky flex bottom-2 w-full justify-around items-center z-50 flex items-center p-2 gap-2 dark:bg-gray-500/95",
+    base: "flex start-2 xs:w-full md:w-2/10 h-full justify-around items-center z-50 flex p-2 gap-2",
     lg: "lg:dark:bg-fgray lg:order-first lg:justify-start lg:rounded-xs lg:h-full lg:w-[70px] lg:flex-col lg:p-1 lg:gap-8",
 
 }

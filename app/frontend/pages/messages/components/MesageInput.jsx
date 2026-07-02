@@ -53,7 +53,6 @@ export default function MessageInput({ chatId }) {
 
   const onTextInputChange = (e) => setBody(e.target.value);
   const onFileUpload = (e) => setFiles(e.target.files);
-  console.log(type)
   const onSubmit = (e) => {
     e.preventDefault();
     const formData = formatedMessageFormObject(files, body);
@@ -116,7 +115,7 @@ export default function MessageInput({ chatId }) {
     </p>)
 
   return (
-    <div className="sticky bottom-0 flex gap-2 relative p-2 lg:p-4">
+    <div className="bottom-0 flex gap-2 relative p-1 lg:p-2 lg:border lg:rounded-full lg:mx-2 lg:border-gray-400">
       {isLoading && loader}
      
       <Form className="w-full" onSubmit={isEditing ? onEditSubmit : onSubmit}>

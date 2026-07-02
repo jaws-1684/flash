@@ -11,7 +11,12 @@ import Tabs from "../Tabs";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 
 export const AppContext = createContext(null)
-
+const shouldDisplayTabs = ({ isMobile, isDesktop }) => {
+  const isMessagesRoute = window.location.pathname.split("/").splice(-1) == "messages"
+  if (isMobile && isMessagesRoute) return false
+  if (isMobile && !isMessagesRoute) return true
+  if (isDesktop) return true
+}
 const Nav = () => {
   const { current_user } = usePage().props;
   return(<div className="panel flex px-2 py-2 item-center justify-between border-gray-200 border-b-1 dark:border-gray-700">
@@ -42,21 +47,20 @@ const Nav = () => {
 }
 
 const Body = ({children}) => {
-  const windowDimensions = 2000
-  const isMobile = windowDimensions.width < 1000
-  const isMessagesRoute = window.location.pathname.split("/").splice(-1) == "messages"
-
+  const windowDimensions = useWindowDimensions()
+  const isDesktop = windowDimensions.width > 1000
+  const isMobile = !isDesktop
+  
   return( <div className="flex flex-col lg:flex-row relative w-full h-full">
-        
-        <div className="w-full h-full">
-          <div className="flex w-full h-9/10 lg:h-full">
+        <div className="md:flex md:flex-row xs:flex-col w-full h-full">
+            { shouldDisplayTabs({ isDesktop, isMobile }) && (<div className="px-2">
+              <Tabs/>
+        </div>)}
+          <div className="flex w-full h-8/10 lg:h-full">
             {children}
           </div>
-          {!isMessagesRoute && isMobile && <div className="px-2">
-            <Tabs/>
-          </div>}
+         
         </div>
-           {!isMobile && <Tabs/>}
         </div>)
 }
 function AppLayout({ children }) {
