@@ -5,9 +5,10 @@ class Chats::ChatsController < ApplicationController
   before_action :set_messageable
   
     def show
-      pagy, records = pagy(:countless, @messageable.messages)
+     
 
       if @messageable
+        pagy, records = pagy(:countless, @messageable.messages)
         render inertia: "messages/index", props: {
           chat: @messageable,
           chats: current_user.chats.includes(:messages),
