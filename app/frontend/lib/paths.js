@@ -1,6 +1,6 @@
 const baseURI = {
   default: "localhost:3000",
-  webSocket: process.env.NODE_ENV == "production" ? `ws://flash.jawsprojects.net/cable` : `ws://localhost:3100/cable`,
+  webSocket: process.env.NODE_ENV == "production" ? `wss://flash.jawsprojects.net/cable` : `ws://localhost:3100/cable`,
 };
 
 const railsRoutes = {
